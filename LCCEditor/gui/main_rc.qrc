@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/main/images">
+        <file>img/add.png</file>
+        <file>img/arrow_refresh.png</file>
+        <file>img/cancel.png</file>
+    </qresource>
+</RCC>
