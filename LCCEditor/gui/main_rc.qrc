@@ -1,7 +1,15 @@
 <RCC>
     <qresource prefix="/main/images">
+        <file>img/accept.png</file>
         <file>img/add.png</file>
+        <file>img/application_add.png</file>
+        <file>img/application_edit.png</file>
+        <file>img/application_side_expand.png</file>
         <file>img/arrow_refresh.png</file>
         <file>img/cancel.png</file>
+        <file>img/coins.png</file>
+        <file>img/coins_add.png</file>
+        <file>img/database.png</file>
+        <file>img/delete.png</file>
     </qresource>
 </RCC>
