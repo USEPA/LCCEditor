@@ -40,7 +40,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="main_rc.qrc">
+         <iconset resource="main.qrc">
           <normaloff>:/main/images/img/coins_add.png</normaloff>:/main/images/img/coins_add.png</iconset>
         </property>
        </widget>
@@ -54,7 +54,7 @@
          <string>Add Sibling Class</string>
         </property>
         <property name="icon">
-         <iconset resource="main_rc.qrc">
+         <iconset resource="main.qrc">
           <normaloff>:/main/images/img/application_side_expand.png</normaloff>:/main/images/img/application_side_expand.png</iconset>
         </property>
        </widget>
@@ -68,7 +68,7 @@
          <string>Add Child Class</string>
         </property>
         <property name="icon">
-         <iconset resource="main_rc.qrc">
+         <iconset resource="main.qrc">
           <normaloff>:/main/images/img/application_add.png</normaloff>:/main/images/img/application_add.png</iconset>
         </property>
        </widget>
@@ -82,7 +82,7 @@
          <string>Edit</string>
         </property>
         <property name="icon">
-         <iconset resource="main_rc.qrc">
+         <iconset resource="main.qrc">
           <normaloff>:/main/images/img/application_edit.png</normaloff>:/main/images/img/application_edit.png</iconset>
         </property>
        </widget>
@@ -99,7 +99,7 @@
          <string>Remove</string>
         </property>
         <property name="icon">
-         <iconset resource="main_rc.qrc">
+         <iconset resource="main.qrc">
           <normaloff>:/main/images/img/delete.png</normaloff>:/main/images/img/delete.png</iconset>
         </property>
         <property name="arrowType">
@@ -261,7 +261,7 @@
           <string>Include All</string>
          </property>
          <property name="icon">
-          <iconset resource="main_rc.qrc">
+          <iconset resource="main.qrc">
            <normaloff>:/main/images/img/accept.png</normaloff>:/main/images/img/accept.png</iconset>
          </property>
         </widget>
@@ -281,7 +281,7 @@
           <string>Add</string>
          </property>
          <property name="icon">
-          <iconset resource="main_rc.qrc">
+          <iconset resource="main.qrc">
            <normaloff>:/main/images/img/add.png</normaloff>:/main/images/img/add.png</iconset>
          </property>
         </widget>
@@ -301,7 +301,7 @@
           <string>Remove</string>
          </property>
          <property name="icon">
-          <iconset resource="main_rc.qrc">
+          <iconset resource="main.qrc">
            <normaloff>:/main/images/img/cancel.png</normaloff>:/main/images/img/cancel.png</iconset>
          </property>
         </widget>
@@ -542,7 +542,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="main_rc.qrc">
+    <iconset resource="main.qrc">
      <normaloff>:/main/images/img/coins.png</normaloff>:/main/images/img/coins.png</iconset>
    </property>
    <property name="text">
@@ -557,7 +557,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="main_rc.qrc">
+    <iconset resource="main.qrc">
      <normaloff>:/main/images/img/database.png</normaloff>:/main/images/img/database.png</iconset>
    </property>
    <property name="text">
@@ -566,7 +566,7 @@
   </action>
  </widget>
  <resources>
-  <include location="main_rc.qrc"/>
+  <include location="main.qrc"/>
  </resources>
  <connections>
   <connection>

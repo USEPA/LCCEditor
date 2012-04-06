@@ -12,11 +12,13 @@ MATCH_UI = "*.ui"
 EXE_COMPILE_UI = "pyside-uic" # Add C:\Python26\ArcGIS10.0\Scripts to PythonPath
 EXE_COMPILE_QRC = "pyside-rcc" # Add C:\Python26\ArcGIS10.0\Lib\site-packages\PySide to PythonPath
 EXE_COMPILE_ARG = "-o"
-PY_EXTENSION = ".py"
 GUI_MODULE_NAME = "gui"
 MSG_CONVERT_DELIMITER = " --> "
 MSG_CONVERT = "\nCompiling gui files..."
 INDENT = "  "
+QRC_SUFFIX = "_rc.py"
+UI_SUFFIX = "_ui.py"
+
 def main():
     buildGui()
 
@@ -46,15 +48,15 @@ def buildGui():
     os.chdir(projectDir)
     
     # convert all .qrc files to .py files with same name
-    compileFiles(MATCH_QRC, EXE_COMPILE_QRC)
+    compileFiles(MATCH_QRC, EXE_COMPILE_QRC, QRC_SUFFIX)
 
     #convert all .ui files to .py files with same name
-    compileFiles(MATCH_UI, EXE_COMPILE_UI)
+    compileFiles(MATCH_UI, EXE_COMPILE_UI, UI_SUFFIX)
     
     # Reset original working directory
     os.chdir(startDir)
     
-def compileFiles(matchString, exeName):
+def compileFiles(matchString, exeName, suffix):
     """ Compile GUI files 
     
         convertMsg:  initial message to display
@@ -64,7 +66,7 @@ def compileFiles(matchString, exeName):
     """
     filePaths = glob(matchString)
     for filePath in filePaths:
-        outName = filePath.split(".")[0] + PY_EXTENSION
+        outName = filePath.split(".")[0] + suffix
         print "    ", filePath, MSG_CONVERT_DELIMITER, outName
         args = [exeName, filePath, EXE_COMPILE_ARG, outName]
         call(args)
