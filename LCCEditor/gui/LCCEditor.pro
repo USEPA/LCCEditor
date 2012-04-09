@@ -1,5 +1,5 @@
 FORMS += \
-    main_ui.ui
+    main.ui
 
 RESOURCES += \
-    main_rc.qrc
+    main.qrc
