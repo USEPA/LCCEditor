@@ -11,6 +11,7 @@ from PySide.QtGui import QPushButton as _QPushButton
 from PySide.QtGui import QApplication as _QApplication
 from PySide.QtGui import QMessageBox
 from PySide.QtGui import QTextEdit
+from PySide import QtCore
 from main_ui import Ui_MainWindow
 import sys as _sys
 import platform
@@ -42,12 +43,18 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.ActionAbout.triggered.connect(self.about)
- #       self.ActionQuit.triggered.connect
+        self.ActionQuit.triggered.connect(self.quit)
+
+ #       self.ActionQuit.connect(self.ActionQuit, TRIGGER("triggered()"), MainWindow.close)
 
     #start here !!!!!!!
     def about(self):
         """Popup a box with the About message."""
  
         QMessageBox.about(self, TITLE, ABOUT_MESSAGE)
-    
+
+    def quit(self):
+        """Close the LCCEditor"""
         
+        QtCore.QObject.connect(self.ActionQuit, QtCore.SIGNAL("triggered()"), MainWindow.close)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_ui.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Mon Apr 09 09:02:28 2012
+# Created: Tue Apr 10 10:44:45 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -253,6 +253,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QObject.connect(self.ActionValuesShowHide, QtCore.SIGNAL("triggered(bool)"), self.ValuesDock.setVisible)
         QtCore.QObject.connect(self.ActionMetadataShowHide, QtCore.SIGNAL("triggered(bool)"), self.MetadataDock.setVisible)
+        QtCore.QObject.connect(self.ActionQuit, QtCore.SIGNAL("triggered()"), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
