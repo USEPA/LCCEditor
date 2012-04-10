@@ -9,10 +9,23 @@
 from PySide.QtGui import QMainWindow as _QMainWindow
 from PySide.QtGui import QPushButton as _QPushButton
 from PySide.QtGui import QApplication as _QApplication
+from PySide.QtGui import QMessageBox
+from PySide.QtGui import QTextEdit
 from main_ui import Ui_MainWindow
 import sys as _sys
+import platform
+import PySide
 
+VERSION = '0.0.1'
+TITLE = "About Land Cover Classification Editor (LCCEditor)"
 
+ABOUT_MESSAGE = """<b>Platform Details</b> v %s
+                <p>Copyright(c) 2012 EPA LEB.
+                <p> This is the EPA LEB LCCEditor.</p>
+                <p>Python %s - PySide version %s - Qt version %s on %s""" % (VERSION,
+                platform.python_version(), PySide.__version__, PySide.QtCore.__version__,
+                platform.system())
+                
 def main():
     """ Launch the MainWindow for the LCCEditor"""
     
@@ -27,4 +40,14 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
     
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.setupUi(self)  
+        self.setupUi(self)
+        self.ActionAbout.triggered.connect(self.about)
+ #       self.ActionQuit.triggered.connect
+
+    #start here !!!!!!!
+    def about(self):
+        """Popup a box with the About message."""
+ 
+        QMessageBox.about(self, TITLE, ABOUT_MESSAGE)
+    
+        

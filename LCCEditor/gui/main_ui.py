@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main.ui'
+# Form implementation generated from reading ui file 'main_ui.ui'
 #
-# Created: Thu Apr 05 17:51:49 2012
+# Created: Mon Apr 09 09:02:28 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,6 +28,11 @@ class Ui_MainWindow(object):
         self.ClassesButtonsHorizontalLayout = QtGui.QHBoxLayout()
         self.ClassesButtonsHorizontalLayout.setObjectName("ClassesButtonsHorizontalLayout")
         self.ClassesInsertValuesButton = QtGui.QPushButton(self.ClassesWidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ClassesInsertValuesButton.sizePolicy().hasHeightForWidth())
+        self.ClassesInsertValuesButton.setSizePolicy(sizePolicy)
         self.ClassesInsertValuesButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/main/images/img/coins_add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)

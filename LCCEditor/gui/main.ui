@@ -33,6 +33,12 @@
      <layout class="QHBoxLayout" name="ClassesButtonsHorizontalLayout">
       <item>
        <widget class="QPushButton" name="ClassesInsertValuesButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>Insert Values</string>
         </property>
