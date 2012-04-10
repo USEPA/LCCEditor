@@ -11,11 +11,14 @@ from PySide.QtGui import QPushButton as _QPushButton
 from PySide.QtGui import QApplication as _QApplication
 from PySide.QtGui import QMessageBox
 from PySide.QtGui import QTextEdit
-from PySide import QtCore
+from PySide.QtGui import QFileDialog
+from PySide.QtCore import QIODevice
+#from PySide.QtCore import subprocess
 from main_ui import Ui_MainWindow
 import sys as _sys
 import platform
 import PySide
+import sys
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -43,7 +46,8 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.ActionAbout.triggered.connect(self.about)
-        self.ActionQuit.triggered.connect(self.quit)
+        self.ActionOpen.triggered.connect(self.fileOpen)
+ #       self.ActionQuit.triggered.connect(self.quit)
 
  #       self.ActionQuit.connect(self.ActionQuit, TRIGGER("triggered()"), MainWindow.close)
 
@@ -53,8 +57,18 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
  
         QMessageBox.about(self, TITLE, ABOUT_MESSAGE)
 
-    def quit(self):
-        """Close the LCCEditor"""
+    def help(self):
+        """Opens LLCEditor Help file"""
         
-        QtCore.QObject.connect(self.ActionQuit, QtCore.SIGNAL("triggered()"), MainWindow.close)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+#         fileName = QFileDialog.getOpenFileName(self, "Open File", "L:\Priv\LEB\Projects\A-H\ATtILA2\Documents", "LCC Files (*.txt)")       
+        
+
+    def fileOpen(self):
+        """Opens a file for working"""
+        
+        fileName = QFileDialog.getOpenFileName(self, "Open File", "L:\Priv\LEB\Projects\A-H\ATtILA2", "LCC Files (*.txt)")
+#        if _sys.platform == 'linux2':
+ #           subprocess.call(["xdg-open", fileName])
+  #      else:
+   #         os.startfile(fileName)
+            
