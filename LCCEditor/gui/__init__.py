@@ -9,16 +9,17 @@
 from PySide.QtGui import QMainWindow as _QMainWindow
 from PySide.QtGui import QPushButton as _QPushButton
 from PySide.QtGui import QApplication as _QApplication
-from PySide.QtGui import QMessageBox
-from PySide.QtGui import QTextEdit
-from PySide.QtGui import QFileDialog
-from PySide.QtCore import QIODevice
-#from PySide.QtCore import subprocess
+from PySide.QtGui import QMessageBox        # needed for about 
+#from PySide.QtGui import QTextEdit
+from PySide.QtGui import QFileDialog        # needed for open
+#from PySide.QtCore import QIODevice
+
+
 from main_ui import Ui_MainWindow
 import sys as _sys
-import platform
-import PySide
-import sys
+import platform                             # needed for platform details
+import PySide                               # needed for version
+import os
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -35,7 +36,7 @@ def main():
     
     app = _QApplication(_sys.argv)
     frame = MainWindow()
-    frame.show()    
+    frame.show()  
     app.exec_()  
 
 
@@ -47,9 +48,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.ActionAbout.triggered.connect(self.about)
         self.ActionOpen.triggered.connect(self.fileOpen)
- #       self.ActionQuit.triggered.connect(self.quit)
-
- #       self.ActionQuit.connect(self.ActionQuit, TRIGGER("triggered()"), MainWindow.close)
+        self.ActionHelp.triggered.connect(self.help)
 
     #start here !!!!!!!
     def about(self):
@@ -60,15 +59,9 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
     def help(self):
         """Opens LLCEditor Help file"""
         
-#         fileName = QFileDialog.getOpenFileName(self, "Open File", "L:\Priv\LEB\Projects\A-H\ATtILA2\Documents", "LCC Files (*.txt)")       
+        os.startfile("D:\ATtILA2\src\LCCEditor\Scripts\TEMP.chm")
         
-
     def fileOpen(self):
-        """Opens a file for working"""
-        
-        fileName = QFileDialog.getOpenFileName(self, "Open File", "L:\Priv\LEB\Projects\A-H\ATtILA2", "LCC Files (*.txt)")
-#        if _sys.platform == 'linux2':
- #           subprocess.call(["xdg-open", fileName])
-  #      else:
-   #         os.startfile(fileName)
-            
+        """Opens a file for viewing"""
+
+        fileName = QFileDialog.getOpenFileName(self, "Open File", "D:\ATtILA2\src\LCCEditor\LCCEditor", "LCC Files (*.txt);;pic files (*.png *.xpm *.jpg);;LCC files (*.lcc)")
