@@ -20,6 +20,8 @@ import sys as _sys
 import platform                             # needed for platform details
 import PySide                               # needed for version
 import os
+import pylet
+
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -59,9 +61,13 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
     def help(self):
         """Opens LLCEditor Help file"""
         
-        os.startfile("D:\ATtILA2\src\LCCEditor\Scripts\TEMP.chm")
+        pathname = os.path.dirname(_sys.argv[0]) + "\TEMP.chm"      # a file relative to running file
+        os.startfile(pathname)
         
     def fileOpen(self):
         """Opens a file for viewing"""
 
-        fileName = QFileDialog.getOpenFileName(self, "Open File", "D:\ATtILA2\src\LCCEditor\LCCEditor", "LCC Files (*.txt);;pic files (*.png *.xpm *.jpg);;LCC files (*.lcc)")
+        fileName = QFileDialog.getOpenFileName(self, "Open File", "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)")
+#         print fileName[0]                    # prints the name of the opened file
+        
+        
