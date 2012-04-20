@@ -68,6 +68,23 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         """Opens a file for viewing"""
 
         fileName = QFileDialog.getOpenFileName(self, "Open File", "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)")
-#         print fileName[0]                    # prints the name of the opened file
+        print fileName[0]                    # prints the name of the opened file
+        print os.path.abspath(fileName[0])
+        fromInputFile = open(fileName[0])           # create file object
+#        print "NAme of the file is :" , fromInputFile.name
+#        bob = "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications\C-CAP.lcc"
+        lccObj = pylet.lcc.LandCoverClassification(fileName[0])         # create a LandCoverClassification object
+#        lCC.loadFromFilePath(fileName[0])
+#        print lccObj.getUniqueValueIds()                        # prints the frozen sets of getUniqueValueIds()
+#        print lccObj.getUniqueValueIdsWithExcludes()            # prints the frozen sets of getUniqueValueIds()    
+  
+#        values2 = pylet.lcc.LandCoverValues
+        for values in lccObj.values.values():                       # prints values for the Value Tree
+            print values.valueId, values.name, values.excluded
+
+#        print lccObj.values
+#        print lCC.metadata
+        for classes in lccObj.classes.values():                     #prints values for the Class Tree
+            print classes.classId, classes.name
         
         
