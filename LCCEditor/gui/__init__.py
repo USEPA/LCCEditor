@@ -21,6 +21,7 @@ import platform                             # needed for platform details
 import PySide                               # needed for version
 import os
 import pylet
+from PySide import QtCore, QtGui
 
 
 VERSION = '0.0.1'
@@ -41,7 +42,7 @@ def main():
     frame.show()  
     app.exec_()  
 
-
+   
 class MainWindow(_QMainWindow, Ui_MainWindow):
     """ MainWindow for the LCCEditor"""
     
@@ -49,9 +50,10 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.ActionAbout.triggered.connect(self.about)
-        self.ActionOpen.triggered.connect(self.fileOpen)
         self.ActionHelp.triggered.connect(self.help)
-
+        self.ActionOpen.triggered.connect(self.fileOpen)
+ #           self.lccFileDir for relative/absolute path
+        
     #start here !!!!!!!
     def about(self):
         """Popup a box with the About message."""
@@ -66,25 +68,37 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         
     def fileOpen(self):
         """Opens a file for viewing"""
-
-        fileName = QFileDialog.getOpenFileName(self, "Open File", "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)")
+        
+        # path will eventually be gotten from a config file through _init__
+        fileName = QFileDialog.getOpenFileName(self, "Open File", 
+                                "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)") # might have to use '/home'
         print fileName[0]                    # prints the name of the opened file
         print os.path.abspath(fileName[0])
         fromInputFile = open(fileName[0])           # create file object
 #        print "NAme of the file is :" , fromInputFile.name
-#        bob = "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications\C-CAP.lcc"
         lccObj = pylet.lcc.LandCoverClassification(fileName[0])         # create a LandCoverClassification object
-#        lCC.loadFromFilePath(fileName[0])
-#        print lccObj.getUniqueValueIds()                        # prints the frozen sets of getUniqueValueIds()
-#        print lccObj.getUniqueValueIdsWithExcludes()            # prints the frozen sets of getUniqueValueIds()    
-  
-#        values2 = pylet.lcc.LandCoverValues
-        for values in lccObj.values.values():                       # prints values for the Value Tree
-            print values.valueId, values.name, values.excluded
+ 
+        for value in lccObj.values.values():                       # prints value for the Value Tree
+            assert isinstance(value,pylet.lcc.LandCoverValue)      # activates auto-completion      
+#            print value.valueId, value.name, value.excluded
+            try:
+                self.ValuesTree.setSortingEnabled(False)
+                item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)
+                if(value.excluded):
+                    item_0.setCheckState(2, QtCore.Qt.Checked)
+                else:
+                    item_0.setCheckState(2, QtCore.Qt.Unchecked)
 
-#        print lccObj.values
-#        print lCC.metadata
-        for classes in lccObj.classes.values():                     #prints values for the Class Tree
+                self.ValuesTree.topLevelItem(value.valueId).setText(0, QtGui.QApplication.translate("MainWindow", 
+                                str(value.valueId), None, QtGui.QApplication.UnicodeUTF8))
+                self.ValuesTree.topLevelItem(value.valueId).setText(1, QtGui.QApplication.translate("MainWindow", 
+                                str(value.name), None, QtGui.QApplication.UnicodeUTF8))
+           
+            except:
+                pass
+           
+        for classes in lccObj.classes.values():                     # prints value for the Class Tree
+            assert isinstance(classes, pylet.lcc.LandCoverClass)    # activates auto-completion 
             print classes.classId, classes.name
         
         
