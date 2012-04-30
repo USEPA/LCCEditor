@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Apr 13 12:29:10 2012
+# Created: Thu Apr 26 12:52:34 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -141,14 +141,6 @@ class Ui_MainWindow(object):
         self.ValuesTree.setFont(font)
         self.ValuesTree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.ValuesTree.setObjectName("ValuesTree")
-        item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)
-        item_0.setCheckState(2, QtCore.Qt.PartiallyChecked)
-        item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)
-        item_0.setCheckState(2, QtCore.Qt.PartiallyChecked)
-        item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)
-        item_0.setCheckState(2, QtCore.Qt.PartiallyChecked)
-        item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)
-        item_0.setCheckState(2, QtCore.Qt.PartiallyChecked)
         self.ValuesTree.header().setDefaultSectionSize(121)
         self.ValuesTree.header().setMinimumSectionSize(4)
         self.ValuesTree.header().setStretchLastSection(True)
@@ -300,17 +292,6 @@ class Ui_MainWindow(object):
         self.ValuesTree.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "id", None, QtGui.QApplication.UnicodeUTF8))
         self.ValuesTree.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "name", None, QtGui.QApplication.UnicodeUTF8))
         self.ValuesTree.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "excluded", None, QtGui.QApplication.UnicodeUTF8))
-        __sortingEnabled = self.ValuesTree.isSortingEnabled()
-        self.ValuesTree.setSortingEnabled(False)
-        self.ValuesTree.topLevelItem(0).setText(0, QtGui.QApplication.translate("MainWindow", "4", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(0).setText(1, QtGui.QApplication.translate("MainWindow", "test", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(1).setText(0, QtGui.QApplication.translate("MainWindow", "3", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(1).setText(1, QtGui.QApplication.translate("MainWindow", "test", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(2).setText(0, QtGui.QApplication.translate("MainWindow", "2", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(2).setText(1, QtGui.QApplication.translate("MainWindow", "test", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(3).setText(0, QtGui.QApplication.translate("MainWindow", "1", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.topLevelItem(3).setText(1, QtGui.QApplication.translate("MainWindow", "test", None, QtGui.QApplication.UnicodeUTF8))
-        self.ValuesTree.setSortingEnabled(__sortingEnabled)
         self.MetadataDock.setWindowTitle(QtGui.QApplication.translate("MainWindow", "METADATA", None, QtGui.QApplication.UnicodeUTF8))
         self.MetadataNameLabel.setText(QtGui.QApplication.translate("MainWindow", "Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.MetadataDescriptionLabel.setText(QtGui.QApplication.translate("MainWindow", "Description:", None, QtGui.QApplication.UnicodeUTF8))

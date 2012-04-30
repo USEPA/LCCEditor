@@ -352,62 +352,6 @@
          <string>excluded</string>
         </property>
        </column>
-       <item>
-        <property name="text">
-         <string>4</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
