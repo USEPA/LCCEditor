@@ -93,12 +93,48 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                                 str(value.valueId), None, QtGui.QApplication.UnicodeUTF8))
                 self.ValuesTree.topLevelItem(value.valueId).setText(1, QtGui.QApplication.translate("MainWindow", 
                                 str(value.name), None, QtGui.QApplication.UnicodeUTF8))
+                
+                self.ValuesTree.clearSelection()   #  **************** This is where i stopped ******************
            
             except:
                 pass
            
+        count = 0        
         for classes in lccObj.classes.values():                     # prints value for the Class Tree
             assert isinstance(classes, pylet.lcc.LandCoverClass)    # activates auto-completion 
-            print classes.classId, classes.name
         
-        
+
+            
+#            print classes.classId, classes.name, classes.uniqueValueIds
+
+ #           try:
+ #               print "in try"
+  #              self.ClassesTree.setSortingEnabled(False)
+#                item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
+                
+#                self.ClassesTree.topLevelItem(count).setText(0, QtGui.QApplication.translate("MainWindow", 
+#                                str(classes.classId), None, QtGui.QApplication.UnicodeUTF8))
+#                self.ClassesTree.topLevelItem(count).setText(1, QtGui.QApplication.translate("MainWindow", 
+#                                str(classes.name), None, QtGui.QApplication.UnicodeUTF8))
+                
+#                self.ClassesTree.topLevelItem(count).child(0).setText(0, QtGui.QApplication.translate("MainWindow", 
+#                               str(classes.uniqueValueIds), None, QtGui.QApplication.UnicodeUTF8))
+#                self.ClassesTree.topLevelItem(count).child(0).setText(1, QtGui.QApplication.translate("MainWindow",
+#                               str(classes.name), None, QtGui.QApplication.UnicodeUTF8))
+                
+#                self.ClassesTree.topLevelItem(count).child(0).child(0).setText(0, QtGui.QApplication.translate("MainWindow", 
+ #                               "3", None, QtGui.QApplication.UnicodeUTF8))
+ #               self.ClassesTree.topLevelItem(count).child(0).child(0).setText(1, QtGui.QApplication.translate("MainWindow", 
+ #                               "test", None, QtGui.QApplication.UnicodeUTF8))
+                
+ #               count = count + 1
+                
+ #           except:
+ #               pass
+            
+
+        metadataName = lccObj.metadata.name
+        self.MetadataNameLineEdit.setText(metadataName)                     # prints the metadata name
+        metadataDescription = lccObj.metadata.description
+        self.MetadataDescriptionTextEdit.setPlainText(metadataDescription)  # prints the metadata description
+
