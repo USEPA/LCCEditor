@@ -65,46 +65,64 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         
         pathname = os.path.dirname(_sys.argv[0]) + "\TEMP.chm"      # a file relative to running file
         os.startfile(pathname)
+    
+    def clearLccItems(self):
+        """ Clear all the LCC items in dialog loaded from file"""
+        
+        self.ValuesTree.clear()
+        self.ClassesTree.clear()
+        self.MetadataNameLineEdit.setText('')                
+        self.MetadataDescriptionTextEdit.setPlainText('') 
         
     def fileOpen(self):
         """Opens a file for viewing"""
         
+
+
+
         # path will eventually be gotten from a config file through _init__
         fileName = QFileDialog.getOpenFileName(self, "Open File", 
-                                "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)") # might have to use '/home'
-        print fileName[0]                    # prints the name of the opened file
-        print os.path.abspath(fileName[0])
-        fromInputFile = open(fileName[0])           # create file object
-#        print "NAme of the file is :" , fromInputFile.name
-        lccObj = pylet.lcc.LandCoverClassification(fileName[0])         # create a LandCoverClassification object
- 
+                                "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)")[0] # might have to use '/home'
+        
+        # Exit if user selected cancel in the dialog
+        if not fileName:
+            return
+        
+        # Clear the dialog of loaded/created items
+        self.clearLccItems()
+
+        # Load the input file
+        lccObj = pylet.lcc.LandCoverClassification(fileName)         # create a LandCoverClassification object
+
+
+        self.ValuesTree.setSortingEnabled(False)
+        
+        # Load values 
         for value in lccObj.values.values():                       # prints value for the Value Tree
-            assert isinstance(value,pylet.lcc.LandCoverValue)      # activates auto-completion      
+            assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
 #            print value.valueId, value.name, value.excluded
             try:
-                self.ValuesTree.setSortingEnabled(False)
+
                 item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)
+                
                 if(value.excluded):
                     item_0.setCheckState(2, QtCore.Qt.Checked)
                 else:
                     item_0.setCheckState(2, QtCore.Qt.Unchecked)
 
-                self.ValuesTree.topLevelItem(value.valueId).setText(0, QtGui.QApplication.translate("MainWindow", 
-                                str(value.valueId), None, QtGui.QApplication.UnicodeUTF8))
-                self.ValuesTree.topLevelItem(value.valueId).setText(1, QtGui.QApplication.translate("MainWindow", 
-                                str(value.name), None, QtGui.QApplication.UnicodeUTF8))
+                item_0.setText(0, str(value.valueId))
+                item_0.setText(1, str(value.name))
                 
-                self.ValuesTree.clearSelection()   #  **************** This is where i stopped ******************
+
            
             except:
                 pass
-           
-        count = 0        
-        for classes in lccObj.classes.values():                     # prints value for the Class Tree
+            
+
+        # Load classes
+        for count, classes in enumerate(lccObj.classes.values()):                     # prints value for the Class Tree
             assert isinstance(classes, pylet.lcc.LandCoverClass)    # activates auto-completion 
         
-
-            
 #            print classes.classId, classes.name, classes.uniqueValueIds
 
  #           try:
@@ -127,14 +145,14 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
  #               self.ClassesTree.topLevelItem(count).child(0).child(0).setText(1, QtGui.QApplication.translate("MainWindow", 
  #                               "test", None, QtGui.QApplication.UnicodeUTF8))
                 
- #               count = count + 1
-                
  #           except:
  #               pass
             
-
+        # Load Metadata Name
         metadataName = lccObj.metadata.name
         self.MetadataNameLineEdit.setText(metadataName)                     # prints the metadata name
+        
+        #Load Metadata Description
         metadataDescription = lccObj.metadata.description
         self.MetadataDescriptionTextEdit.setPlainText(metadataDescription)  # prints the metadata description
 
