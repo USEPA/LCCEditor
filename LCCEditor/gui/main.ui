@@ -10,6 +10,12 @@
     <height>774</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Land Cover Classification Editor</string>
   </property>
@@ -35,8 +41,8 @@
        <widget class="QPushButton" name="ClassesInsertValuesButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
+          <horstretch>23</horstretch>
+          <verstretch>22</verstretch>
          </sizepolicy>
         </property>
         <property name="toolTip">
@@ -52,12 +58,18 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="ClassesAddSiblingButton">
+       <widget class="QPushButton" name="ClassesAddSiblingButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>Add Sibling Class</string>
         </property>
         <property name="text">
-         <string>Add Sibling Class</string>
+         <string/>
         </property>
         <property name="icon">
          <iconset resource="main.qrc">
@@ -66,12 +78,18 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="ClassesAddChildButton">
+       <widget class="QPushButton" name="ClassesAddChildButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>Add Child Class</string>
         </property>
         <property name="text">
-         <string>Add Child Class</string>
+         <string/>
         </property>
         <property name="icon">
          <iconset resource="main.qrc">
@@ -80,12 +98,18 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="ClassesEditButton">
+       <widget class="QPushButton" name="ClassesEditButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>Edit Class</string>
         </property>
         <property name="text">
-         <string>Edit</string>
+         <string/>
         </property>
         <property name="icon">
          <iconset resource="main.qrc">
@@ -142,54 +166,6 @@
         <string>name</string>
        </property>
       </column>
-      <item>
-       <property name="text">
-        <string>wetl</string>
-       </property>
-       <property name="text">
-        <string>Wetlands</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>4</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text">
-        <string>for</string>
-       </property>
-       <property name="text">
-        <string>Forest</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-      </item>
      </widget>
     </item>
    </layout>
@@ -228,7 +204,6 @@
      <string>&amp;Import</string>
     </property>
     <addaction name="ActionImportFromRaster"/>
-    <addaction name="ActionImportFromLcc"/>
    </widget>
    <addaction name="MenuFile"/>
    <addaction name="MenuImport"/>
@@ -253,9 +228,16 @@
      <item>
       <layout class="QHBoxLayout" name="ValuesButtonsHorizontalLayout">
        <item>
-        <widget class="QToolButton" name="ValuesIncludeAllButton">
+        <widget class="QPushButton" name="ValuesIncludeAllButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
+           <family>MS Shell Dlg 2</family>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -264,7 +246,7 @@
           <string>Include All</string>
          </property>
          <property name="text">
-          <string>Include All</string>
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="main.qrc">
@@ -273,9 +255,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="ValuesAddButton">
+        <widget class="QPushButton" name="ValuesAddButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
+           <family>MS Shell Dlg 2</family>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -284,7 +273,7 @@
           <string>Add Value</string>
          </property>
          <property name="text">
-          <string>Add</string>
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="main.qrc">
@@ -293,18 +282,25 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="ValuesRemoveButton">
+        <widget class="QPushButton" name="ValuesRemoveButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>MS Shell Dlg 2</family>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
          </property>
          <property name="toolTip">
           <string>Remove Value</string>
          </property>
          <property name="text">
-          <string>Remove</string>
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="main.qrc">
@@ -323,7 +319,10 @@
         </font>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::MultiSelection</enum>
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectItems</enum>
        </property>
        <property name="sortingEnabled">
         <bool>true</bool>
@@ -515,6 +514,19 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>MetadataNameLineEdit</tabstop>
+  <tabstop>MetadataDescriptionTextEdit</tabstop>
+  <tabstop>ClassesAddChildButton</tabstop>
+  <tabstop>ClassesEditButton</tabstop>
+  <tabstop>ClassesRemoveButton</tabstop>
+  <tabstop>ClassesTree</tabstop>
+  <tabstop>ValuesRemoveButton</tabstop>
+  <tabstop>ValuesTree</tabstop>
+  <tabstop>ClassesInsertValuesButton</tabstop>
+  <tabstop>ClassesAddSiblingButton</tabstop>
+  <tabstop>ValuesAddButton</tabstop>
+ </tabstops>
  <resources>
   <include location="main.qrc"/>
  </resources>
@@ -546,8 +558,8 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>777</x>
-     <y>299</y>
+     <x>273</x>
+     <y>691</y>
     </hint>
    </hints>
   </connection>
