@@ -21,7 +21,7 @@ from PySide import QtCore, QtGui
 from PySide.QtCore import *
 from PySide.QtGui import *
 from xml.dom.minidom import parse
-
+from pprint import pprint
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -47,7 +47,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
     
     fileName = ""
     tempFileName = ""
-    lccObj = None
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -56,13 +55,11 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         self.ActionHelp.triggered.connect(self.helpMenu)
         self.ActionOpen.triggered.connect(self.fileOpen)
         self.ActionSave.triggered.connect(self.fileSave)
-        self.ActionNew.triggered.connect(self.clearLccItems)
-        
+        self.ActionSaveAs.triggered.connect(self.fileSave)
+        self.ActionNew.triggered.connect(self.new)
         self.ValuesAddButton.clicked.connect(self.addValueButton)
-#        self.ValuesAddButton.connect(addValueButton(),QtCore.SIGNAL("triggered()"),self.addValueButton)
-#        self.ValuesAddButton.triggered.connect(self.addValue)
-#       QtCore.QObject.connect(self.ValuesAddButt on, QtCore.SIGNAL("triggered(bool)"))self.ValuesTree.addTopLevelItem()
-#           self.lccFileDir for relative/absolute path
+        self.ValuesRemoveButton.clicked.connect(self.deleteValueButton)
+        self.tempLccObj = pylet.lcc.LandCoverClassification()
         
     #start here !!!!!!!
     def about(self):
@@ -83,25 +80,39 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         self.ClassesTree.clear()
         self.MetadataNameLineEdit.setText('')                
         self.MetadataDescriptionTextEdit.setPlainText('') 
+#        self.tempLccObj = pylet.lcc.LandCoverClassification()
+
+    def new(self):
+        """ Clear all the LCC items in dialog loaded from file"""
         
-#    def ValueAddButton(self):
-#        self.ValuesTree.clear()
+        self.ValuesTree.clear()
+        self.ClassesTree.clear()
+        self.MetadataNameLineEdit.setText('')                
+        self.MetadataDescriptionTextEdit.setPlainText('') 
+        self.tempLccObj = pylet.lcc.LandCoverClassification()
         
+        
+    def getFileName(self):
+        """Gets the file name and creates a temporary file name """
+        global fileName, tempFileName
+        
+        # path will eventually be gotten from a config file through _init__
+        self.fileName = QFileDialog.getOpenFileName(self,"Open File", 
+            "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", 
+            "LCC files (*.lcc)")[0] # might have to use '/home')
+            
     def fileOpen(self):
         """Opens a file for viewing"""
-        ten = "10"
-        indent = "    "
-        global fileName, tempFileName, lccObj
+        global fileName, tempFileName, tempLccObj
+        
+        # gets the file name
+        self.getFileName()
 
-        # path will eventually be gotten from a config file through _init__
-        self.fileName = QFileDialog.getOpenFileName(self, "Open File", 
-                                "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", "LCC files (*.lcc)")[0] # might have to use '/home'
-        self.tempFileName = self.fileName.split('.')
-
-        self.tempFileName = self.tempFileName[0] + ".tmp"             # building temporary file name
         # Exit if user selected cancel in the dialog
         if not self.fileName:
             return
+
+        print "filename is ", self.fileName
         
         # Clear the dialog of loaded/created items
         self.clearLccItems()
@@ -109,10 +120,24 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         # Load the input file
         self.lccObj = pylet.lcc.LandCoverClassification(self.fileName)         # create a LandCoverClassification object
 
-        self.ValuesTree.setSortingEnabled(False)
+        self.tempLccObj = self.lccObj
+        
+        self.displayFile()
+        
+    def displayFile(self):
+        """Displays the file """
+        
+        ten = "10"
+        indent = "    "
+        
+        self.clearLccItems()
+        
+
+        self.ValuesTree.setSortingEnabled(True)
+#        self.ValuesTree.sortByColumn(0,Qt.AscendingOrder)
       
         # Load values 
-        for value in self.lccObj.values.values():                       # prints value for the Value Tree
+        for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
             assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
 #            print value.valueId, value.name, value.excluded
             try:
@@ -153,7 +178,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
 
         self.ClassesTree.setSortingEnabled(False)
    
-        for topLevelClass in self.lccObj.classes.topLevelClasses:
+        for topLevelClass in self.tempLccObj.classes.topLevelClasses:
             assert isinstance(topLevelClass, pylet.lcc.LandCoverClass)
             
             try:
@@ -170,60 +195,63 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         print
                 
         # Load Metadata Name
-        metadataName = self.lccObj.metadata.name
+        metadataName = self.tempLccObj.metadata.name
         self.MetadataNameLineEdit.setText(metadataName)
         
         # Load Metadata Description
         metadataDescription = self.lccObj.metadata.description
         self.MetadataDescriptionTextEdit.setPlainText(metadataDescription)
-        
+                
     def fileSave(self):
         
-#        from os.path import isfile
-        
-        global lccObj
+        global tempLccObj
         indent = "    "
-
+        
         root_dir = os.path.join(".",'\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications')
         outFileName = QFileDialog.getSaveFileName(self,'Save File',root_dir,"LCC files (*.lcc)")[0]
-        print 'out file name is', outFileName
+#        print 'out file name is', outFileName
         if not outFileName:
             return
         outFileName = open(outFileName,'w')
 #        print "This is the in file name", fileName
-        print 'This is tempFileName', self.tempFileName
+#        print 'This is tempFileName', self.tempFileName
 #        print 'This is lccObj', lccObj
         container = 'ATtILA2{0}ToolboxSource'.format(os.sep)
-        print "container is ", container
+#        print "container is ", container
         dirName = pylet.lcc.constants.PredefinedFileDirName
-        print "dirName is ", dirName
-        
+#        print "dirName is ", dirName
+
+        self.tempLccObj.metadata.name = self.MetadataNameLineEdit.text()
+        self.tempLccObj.metadata.description = self.MetadataDescriptionTextEdit.toPlainText()
+
         # File Output starts here        
         outFileName.write('<root>')
         outFileName.write("\n")
         outFileName.write("\n")
-        
         outFileName.write(indent)
         outFileName.write('<metadata>')
         outFileName.write("\n")
+        outFileName.write(indent)
+        outFileName.write(indent)
+        outFileName.write('<name>')
+        try:
+            outFileName.write(str(self.tempLccObj.metadata.name))
+        except:
+            pass
+
+        outFileName.write('</name>')
+        outFileName.write("\n")
+        outFileName.write(indent)
+        outFileName.write(indent)
+        outFileName.write('<description>')
 
         try:
-            outFileName.write(indent)
-            outFileName.write(indent)
-            outFileName.write('<name>')
-            outFileName.write(str(self.lccObj.metadata.name))
-            outFileName.write('<name>')
-            outFileName.write("\n")
-            outFileName.write(indent)
-            outFileName.write(indent)
-            outFileName.write('<description>')
-            outFileName.write(str(self.lccObj.metadata.description))
-            outFileName.write('</description>')
-            outFileName.write("\n")
-            
-        except:  
-            pass  
+            outFileName.write(str(self.tempLccObj.metadata.description))
+        except:
+            pass
 
+        outFileName.write('</description>')
+        outFileName.write("\n")
         outFileName.write(indent)
         outFileName.write('</metadata>')
         outFileName.write("\n")
@@ -261,32 +289,34 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         outFileName.write('<values>')
         outFileName.write("\n")
         
-        for value in self.lccObj.values.values():                       # prints value for the Value Tree
-            assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
-
-            try:
-                outFileName.write(indent)
-                outFileName.write(indent)
-                outFileName.write('<value id="')
-                outFileName.write(str(value.valueId))
-                outFileName.write('" name="')
-                outFileName.write(str(value.name))
-#                
-                if(value.excluded):
-                    outFileName.write('" excluded="true" >')
+        try:
+            for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
+                assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
+    
+                try:
+                    outFileName.write(indent)
+                    outFileName.write(indent)
+                    outFileName.write('<value id="')
+                    outFileName.write(str(value.valueId))
+                    outFileName.write('" name="')
+                    outFileName.write(str(value.name))
+    #                
+                    if(value.excluded):
+                        outFileName.write('" excluded="true" >')
+                        outFileName.write("\n")
+                    else:
+                        outFileName.write('" >')
+                        outFileName.write("\n")
+                        
+                    outFileName.write(indent)
+                    outFileName.write(indent)
+                    outFileName.write('</value>')
                     outFileName.write("\n")
-                else:
-                    outFileName.write('" >')
-                    outFileName.write("\n")
-                    
-                outFileName.write(indent)
-                outFileName.write(indent)
-                outFileName.write('</value>')
-                outFileName.write("\n")
-           
-            except:
-                pass
-
+                except:
+                    pass
+        except:
+            pass
+        
         outFileName.write(indent)
         outFileName.write('</values>')
         
@@ -328,8 +358,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                 outFileName.write('" >')
                 outFileName.write("\n")
 
-#                print indentUnit*indentLevel, childClass.classId, childClass.name
-
                 for childValueId in childClass.childValueIds:
                     outFileName.write(indentUnit*(indentLevel+1))
                     outFileName.write('<value id="')
@@ -338,36 +366,39 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                     outFileName.write("\n")
                 
                 printDescendentClasses(childClass,item_1, indentUnit, indentLevel + 1)
+                outFileName.write(indentUnit*indentLevel)
+                outFileName.write("</class>")
+                outFileName.write("\n")
         
-        for topLevelClass in self.lccObj.classes.topLevelClasses:
-            assert isinstance(topLevelClass, pylet.lcc.LandCoverClass)
-            
-            item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
-
-            try:
+        try:
+            for topLevelClass in self.tempLccObj.classes.topLevelClasses:
+                assert isinstance(topLevelClass, pylet.lcc.LandCoverClass)
                 
-                outFileName.write(indent)
-                outFileName.write(indent)
-                outFileName.write('<class id="')
-                outFileName.write(str(topLevelClass.classId))
-                outFileName.write('" name="')
-                outFileName.write(str(topLevelClass.name))
-                outFileName.write('" lcpField="')
-#                outFileName.write( <lcpFieldType>)
-                outFileName.write('" filter="')
-#                outFileName.write( <lcosp>)
-                outFileName.write('" >')
-                outFileName.write("\n")
-
-                printDescendentClasses(topLevelClass, item_0, indent, 3)
+                item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
+    
+                try:
+                    outFileName.write(indent)
+                    outFileName.write(indent)
+                    outFileName.write('<class id="')
+                    outFileName.write(str(topLevelClass.classId))
+                    outFileName.write('" name="')
+                    outFileName.write(str(topLevelClass.name))
+                    outFileName.write('" lcpField="')
+                    outFileName.write('" filter="')
+                    outFileName.write('" >')
+                    outFileName.write("\n")
+    
+                    printDescendentClasses(topLevelClass, item_0, indent, 3)
+                    
+                    outFileName.write(indent)
+                    outFileName.write(indent)
+                    outFileName.write('</class>')
+                    outFileName.write("\n")
+                except:
+                    pass
                 
-                outFileName.write(indent)
-                outFileName.write(indent)
-                outFileName.write('</class>')
-                outFileName.write("\n")
-                
-            except:
-                pass
+        except:
+            pass
             
         outFileName.write(indent)
         outFileName.write('</classes>')
@@ -377,72 +408,141 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         outFileName.write('</root>')
         
         outFileName.close()
-
-
-
-#        outFileName = open('self.tempFileName', 'w')
-        
-#        for value in lccObj.values.values():                       # prints value for the Value Tree
-#            assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
-#            print outFileName.write(str(value.valueId))
-#            print outFileName.write('\n')
-#            print outFileName.write(str(value.name))
-#            print outFileName.write('\n')
-#            print outFileName.write(str(value.excluded))
-#            print outFileName.write('\n')
-            
-#        root_dir = os.path.abspath(os.path.dirname(__file__))
-#        print 'root_dir ', root_dir
-#        root_dir = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0]
-#        print 'root_dir ', root_dir
-#        root_dir = os.path.join(".",'\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications')
-#        print 'root_dir ', root_dir
-        
-        
-#        print self.fileOpen().lccObj.values.value
-        
-#        outFileName = open(QFileDialog.getSaveFileName(self,'Save File',root_dir,"LCC files (*.lcc)")[0],'w')
-#        print outFileName.write('This sucks')
-#        curfile = "In the Save"
-#        item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
-#        dom = parse(outFileName)
-#        x = dom.createElement('metadata')       # creates <metadata />
-#        dom.childNodes[1].appendChild(x)
-#        print "this is dom to xml", dom.toxml()
-
-
-#        dom = parse(str(outFileName))
-#
-#        def getChildrenByTitle(node):
-#            for child in node.childNodes:
-#                if child.localName=='Title':
-#                    yield child
-#
-#        Topic=dom.getElementsByTagName('Topic')
-#        for node in Topic:
-#            alist=getChildrenByTitle(node)
-#            for a in alist:
-##                Title= a.firstChild.data
-#                Title= a.childNodes[0].nodeValue
-#                print Title
         
     def addValueButton(self):
+        global tempLccObj
         
-        self.edit1 = QLineEdit("Input ID")
-        self.edit2 = QLineEdit("Input Value")
-        self.addButton = QPushButton("Add")
+        # prompts user input from a Input Dialog Box
+        text1, ok = QtGui.QInputDialog.getInt(self, 'Input Dialog', 'Enter Id of the Value', minValue=0)
         
-        layout = QVBoxLayout()
-        layout.addWidget(self.edit1)
-        layout.addWidget(self.edit2)
-        layout.addWidget(self.addButton)
+        # checks to see if value was entered
+        if text1:
+            self.tempLccObj.values.valueId = text1                  # set key value to entered value
+
+            # checks if value exists in dictionary
+            for key in self.tempLccObj.values.keys():
+                if key == text1:
+                    QMessageBox.warning(self, "ALERT - Value ID", "Id has already been used. Please enter another id "
+                    + "or delete id then reenter")
+                    return
+
+            # prompts user for value and whether excluded
+            text2, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', 'Enter name of the Value')
+            text2 = text2.title()           # capitalizes first letter of each word
+
+            text3, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', 'Excluded( Enter yes or no')
+            text3 = text3.lower()           # changes string to lower characters
+
+#            while text3 != "yes" or text3 != "no":
+#                text3, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', 'Excluded( Enter yes or no')
+#                text3 = text3.lower()           # changes string to lower characters
+
+                          
+            self.tempLCV = pylet.lcc.LandCoverValue()               # create a new LandCoverValue object
+           
+            self.tempLCV.addValues(text1, text2, text3)             # populate the object
+            
+            self.tempLccObj.values[text1] = (self.tempLCV)          # populate the keys with the objects
         
-        self.setLayout(layout)
+#        keys = self.tempLccObj.values.keys()
+#        values = self.tempLccObj.values.values()
+            
+    #        print type(self.tempLccObj.values)
+            
+            #checks if list is empty
+#        if not keys:
+#            pass
+#        else:
+#            print "These are keys:"
+#            print keys
+#        if not values:
+#            pass
+#        else:
+#            print "Theres are values:"
+#            print values
+#        if not keys:
+#            pass
+#        else:    
+#            print "These are the items"
+#            print self.tempLccObj.values.items()
+#        
+#        print text3   
+#            self.displayFile(self)
+
+#        self.addButton.clicked.connect(self.addValueButtonDialog)
+        for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
+            try:
+                print value.valueId
+                print value.name
+            except:
+                print "in except"
+                pass
+
+        print
+        self.displayFile()
+                                            
+    def deleteValueButton(self):
+        global tempLccObj                   # global object
         
-        self.addButton.clicked.connect(self.addValueButtonDialog)
+#        found = None                        # variable assignment, to be used to check if 
         
-        print "In AddValueButton"
-        
+#        print "In deleteValueButton"
+        # checks to see if there are any keys in the dictionary
+        if self.tempLccObj.values.keys():
+#            tempDVB = pylet.lcc.LandCoverClassification()               # creates an object for 
+#            
+#            self.tempDVB = self.tempLccObj
+#            
+#            print self.tempDVB
+    #        
+            for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
+    #            assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
+    #            print value.valueId, value.name, value.excluded
+                try:
+    
+                    print value.valueId
+                    print value.name
+                except:
+                    print "in except"
+                    pass
+            # Gets id to delete
+            text1, ok = QtGui.QInputDialog.getInt(self, 'Input Dialog', 'Enter Id of the Value to delete', minValue=0)
+            
+            if text1:
+    #            self.tempLccObj.values.valueId = text1
+                text1 = int(text1)
+                print "This is keys", self.tempLccObj.values.keys()
+                
+                if text1 in self.tempLccObj.values.keys():
+                    del self.tempLccObj.values[text1]
+                    self.displayFile()
+                elif not self.tempLccObj.values.keys():
+                    QMessageBox.warning(self, "No ids", "no id's exist")
+                else:
+                    print "error, no id"
+                
+    #            for key in self.tempLccObj.values.keys():
+    #                print "This is key", key
+    #                print "THis is text1", text1
+    #                print self.tempLccObj.values.keys()
+    #                if key == text1:
+    #                    print "in del" 
+    #                    found = True       
+    #                    del self.tempLccObj.values[text1]
+    #                    print self.tempLccObj.values.keys()
+    #                    self.displayFile()
+    #
+    #            if not found:
+    #                print "in else"
+    #                QMessageBox.about(self, "ALERT", "Id doesn't exist.")
+    #        else:
+    #            print "in pass"
+    #            pass
+            
+    #        found = None
+        else:
+            QMessageBox.warning(self, "Values IDs", "Currently there are no Value id's")
+              
     def addValueButtonDialog(self):
         print "In widget"
         item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)        
