@@ -21,7 +21,9 @@ from PySide import QtCore, QtGui
 from PySide.QtCore import *
 from PySide.QtGui import *
 from xml.dom.minidom import parse
+from xml.dom.minidom import Document
 from pprint import pprint
+from Tkinter import Toplevel
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -57,8 +59,13 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         self.ActionSave.triggered.connect(self.fileSave)
         self.ActionSaveAs.triggered.connect(self.fileSave)
         self.ActionNew.triggered.connect(self.new)
-        self.ValuesAddButton.clicked.connect(self.addValueButton)
-        self.ValuesRemoveButton.clicked.connect(self.deleteValueButton)
+        self.ValuesAddButton.clicked.connect(self.valuesAddButton)
+        self.ValuesRemoveButton.clicked.connect(self.valuesDeleteButton)
+        self.ClassesInsertValuesButton.clicked.connect(self.classesInsertValuesButton)
+        self.ClassesAddSiblingButton.clicked.connect(self.classesAddSiblingClassButton)
+        self.ClassesAddChildButton.clicked.connect(self.classesAddChildClassButton)
+        self.ClassesEditButton.clicked.connect(self.classesEditClassButton)
+        self.ClassesRemoveButton.clicked.connect(self.classesRemoveClassButton)
         self.tempLccObj = pylet.lcc.LandCoverClassification()
         
     #start here !!!!!!!
@@ -94,6 +101,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         
     def getFileName(self):
         """Gets the file name and creates a temporary file name """
+        
         global fileName, tempFileName
         
         # path will eventually be gotten from a config file through _init__
@@ -103,6 +111,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
             
     def fileOpen(self):
         """Opens a file for viewing"""
+        
         global fileName, tempFileName, tempLccObj
         
         # gets the file name
@@ -125,7 +134,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         self.displayFile()
         
     def displayFile(self):
-        """Displays the file """
+        """Displays the file in the GUI"""
         
         ten = "10"
         indent = "    "
@@ -134,7 +143,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         
 
         self.ValuesTree.setSortingEnabled(True)
-#        self.ValuesTree.sortByColumn(0,Qt.AscendingOrder)
+        self.ValuesTree.sortByColumn(0,Qt.AscendingOrder)
       
         # Load values 
         for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
@@ -157,7 +166,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
             
         # Load classes
         def printDescendentClasses(landCoverClass, item_0, indentUnit, indentLevel):
-            
+            i = 1
             for childClass in landCoverClass.childClasses:
                 assert isinstance(childClass, pylet.lcc.LandCoverClass)
                 
@@ -165,17 +174,18 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                 item_1 = QtGui.QTreeWidgetItem(item_0)
                 item_1.setText(0, childClass.classId) #set id
                 item_1.setText(1, childClass.name)   #set name
-
+                print (i*indent), childClass.classId, childClass.name
 #                print indentUnit*indentLevel, childClass.classId, childClass.name
-
+                j = 2
                 for childValueId in childClass.childValueIds:
                     
                     childItem = QtGui.QTreeWidgetItem(item_1)
                     childItem.setText(0, str(childValueId))
-
-                
+                    print (j * indent), childValueId
+ 
                 printDescendentClasses(childClass,item_1, indentUnit, indentLevel + 1)
-
+                j = j + 1
+            i = i + 1
         self.ClassesTree.setSortingEnabled(False)
    
         for topLevelClass in self.tempLccObj.classes.topLevelClasses:
@@ -186,7 +196,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
 
                 item_0.setText(0, str(topLevelClass.classId))
                 item_0.setText(1, str(topLevelClass.name))
-
+                print topLevelClass.classId, topLevelClass.name
 #                item_1 = QTreeWidgetItem(item_0.setText(0, str(topLevelClass.classId)))
             except:
                 pass
@@ -203,6 +213,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         self.MetadataDescriptionTextEdit.setPlainText(metadataDescription)
                 
     def fileSave(self):
+        """ Saves the file in the required format"""
         
         global tempLccObj
         indent = "    "
@@ -349,12 +360,12 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                 # childClass
                 item_1 = QtGui.QTreeWidgetItem()
                 outFileName.write(indentUnit*indentLevel)
-                outFileName.write('<class  id="')
+                outFileName.write('<class id="')
                 outFileName.write(str(childClass.classId))    #set id
                 outFileName.write('" name="')
                 outFileName.write(str(childClass.name))       #set name
                 outFileName.write('" filter="')
-                outFileName.write('" <lcosp>')
+#                outFileName.write('" lcosp"')
                 outFileName.write('" >')
                 outFileName.write("\n")
 
@@ -362,7 +373,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                     outFileName.write(indentUnit*(indentLevel+1))
                     outFileName.write('<value id="')
                     outFileName.write(str(childValueId))
-                    outFileName.write('" />')
+                    outFileName.write('"/>')
                     outFileName.write("\n")
                 
                 printDescendentClasses(childClass,item_1, indentUnit, indentLevel + 1)
@@ -409,16 +420,17 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         
         outFileName.close()
         
-    def addValueButton(self):
+    def valuesAddButton(self):
+        """ Add value button allows the user to enter in new IDs, Values and Excluded values""" 
         global tempLccObj
         
-        # prompts user input from a Input Dialog Box
-        text1, ok = QtGui.QInputDialog.getInt(self, 'Input Dialog', 'Enter Id of the Value', minValue=0)
+        # prompts user to input ID from a Input Dialog Box
+        text1, ok = QtGui.QInputDialog.getInt(self, 'Values id Dialog', 'Enter Id of the Value', minValue=0)
         
         # checks to see if value was entered
         if text1:
-            self.tempLccObj.values.valueId = text1                  # set key value to entered value
-
+#            self.tempLccObj.values.valueId = text1                  # set key value to entered value **useless line?
+            print self.tempLccObj.values.items()
             # checks if value exists in dictionary
             for key in self.tempLccObj.values.keys():
                 if key == text1:
@@ -426,126 +438,230 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                     + "or delete id then reenter")
                     return
 
-            # prompts user for value and whether excluded
-            text2, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', 'Enter name of the Value')
+            # prompts user to input value
+            text2, ok = QtGui.QInputDialog.getText(self, 'Values name Dialog', 'Enter name of the Value')
+            if not text2:                   # checks to see if value was entered
+                return
             text2 = text2.title()           # capitalizes first letter of each word
 
-            text3, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', 'Excluded( Enter yes or no')
+            # prompts user to input Excluded value
+            text3, ok = QtGui.QInputDialog.getText(self, 'Values excluded Dialog', 'Excluded (Enter yes or no)')
             text3 = text3.lower()           # changes string to lower characters
 
-#            while text3 != "yes" or text3 != "no":
-#                text3, ok = QtGui.QInputDialog.getText(self, 'Input Dialog', 'Excluded( Enter yes or no')
-#                text3 = text3.lower()           # changes string to lower characters
+            if not text3:                   # checks to see if excluded value was entered
+                return
+            while text3:                    # checks to see if excluded value was 'yes' or 'no'
+#                print "in while"
+                if text3 == "yes":
+                    break
+                elif text3 == "no":
+                    break
+                else:                       # if users didn't enter yes/no, reprompts
+                    text3, ok = QtGui.QInputDialog.getText(self, 'Values excluded Dialog', "Please enter Excluded value"
+                                                           + " as 'yes' or 'no'")
+                    text3 = text3.lower()           # changes string to lower characters
+                    if not text3:
+                        return
 
-                          
-            self.tempLCV = pylet.lcc.LandCoverValue()               # create a new LandCoverValue object
+            self.tempValueLCV = pylet.lcc.LandCoverValue()               # create a new LandCoverValue object
            
-            self.tempLCV.addValues(text1, text2, text3)             # populate the object
+            self.tempValueLCV.addValues(text1, text2, text3)             # populate the object
             
-            self.tempLccObj.values[text1] = (self.tempLCV)          # populate the keys with the objects
-        
-#        keys = self.tempLccObj.values.keys()
-#        values = self.tempLccObj.values.values()
+            self.tempLccObj.values[text1] = (self.tempValueLCV)          # populate the keys with the objects
             
-    #        print type(self.tempLccObj.values)
-            
-            #checks if list is empty
-#        if not keys:
-#            pass
-#        else:
-#            print "These are keys:"
-#            print keys
-#        if not values:
-#            pass
-#        else:
-#            print "Theres are values:"
-#            print values
-#        if not keys:
-#            pass
-#        else:    
-#            print "These are the items"
-#            print self.tempLccObj.values.items()
-#        
-#        print text3   
-#            self.displayFile(self)
+#        for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
+#            try:
+#                print value.valueId
+#                print value.name
+#            except:
+#                print "in except"
+#                pass
 
-#        self.addButton.clicked.connect(self.addValueButtonDialog)
-        for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
-            try:
-                print value.valueId
-                print value.name
-            except:
-                print "in except"
-                pass
-
-        print
-        self.displayFile()
+        self.displayFile()                              # updates GUI to display correct values
                                             
-    def deleteValueButton(self):
+    def valuesDeleteButton(self):
+        """ The delete value button deletes value entries from the GUI"""
+        
         global tempLccObj                   # global object
         
-#        found = None                        # variable assignment, to be used to check if 
-        
-#        print "In deleteValueButton"
-        # checks to see if there are any keys in the dictionary
+        # checks to see if there are any keys in the dictionary, if it is empty
         if self.tempLccObj.values.keys():
-#            tempDVB = pylet.lcc.LandCoverClassification()               # creates an object for 
-#            
-#            self.tempDVB = self.tempLccObj
-#            
-#            print self.tempDVB
-    #        
-            for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
-    #            assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
-    #            print value.valueId, value.name, value.excluded
-                try:
-    
-                    print value.valueId
-                    print value.name
-                except:
-                    print "in except"
-                    pass
-            # Gets id to delete
+           # prompts the user for id to delete from a dialog box
             text1, ok = QtGui.QInputDialog.getInt(self, 'Input Dialog', 'Enter Id of the Value to delete', minValue=0)
-            
-            if text1:
-    #            self.tempLccObj.values.valueId = text1
-                text1 = int(text1)
-                print "This is keys", self.tempLccObj.values.keys()
-                
+            if text1:                       # checks to see if a value was entered
+                # Checks to see if the id entered is in the list/dictionary
                 if text1 in self.tempLccObj.values.keys():
-                    del self.tempLccObj.values[text1]
-                    self.displayFile()
-                elif not self.tempLccObj.values.keys():
-                    QMessageBox.warning(self, "No ids", "no id's exist")
-                else:
-                    print "error, no id"
-                
-    #            for key in self.tempLccObj.values.keys():
-    #                print "This is key", key
-    #                print "THis is text1", text1
-    #                print self.tempLccObj.values.keys()
-    #                if key == text1:
-    #                    print "in del" 
-    #                    found = True       
-    #                    del self.tempLccObj.values[text1]
-    #                    print self.tempLccObj.values.keys()
-    #                    self.displayFile()
-    #
-    #            if not found:
-    #                print "in else"
-    #                QMessageBox.about(self, "ALERT", "Id doesn't exist.")
-    #        else:
-    #            print "in pass"
-    #            pass
-            
-    #        found = None
-        else:
-            QMessageBox.warning(self, "Values IDs", "Currently there are no Value id's")
+                    del self.tempLccObj.values[text1]                           # delete the id from the dictionary
+                    self.displayFile()                                          # redisplay values in editor/GUI/screen
+                else:                       # if value doesn't exist, prints warning message for invalid id
+                    QMessageBox.warning(self, "Invalid id", "The id entered doesn't exist")
+        else:                           # prints warning message concerning empty Values table
+            QMessageBox.warning(self, "Values IDs", "Currently there are no Value id's")        # prints prints warning 
+                                                                        # message concerning empty Values table
+    def classesInsertValuesButton(self):
+        print "in insert values button"
               
-    def addValueButtonDialog(self):
-        print "In widget"
-        item_0 = QtGui.QTreeWidgetItem(self.ValuesTree)        
+    def classesAddSiblingClassButton(self):
+        print "in add sibling class button"
         
-        item_0.setText(0, self.edit1.text())
-        item_0.setText(1, self.edit2.text())
+        global tempLccObj
+        filterList = ["", "lcp", "lcosp", "rlcp", "lccc", "splcp"]
+        indent = "    "
+        classId = None
+#        filter = None
+        lcpField = None
+        
+
+        print "Class Items:"
+        if self.tempLccObj.classes.items():
+            print self.tempLccObj.classes.items()
+        else:
+            print "    No Class Items"
+        print
+        j = 0
+        for key in self.tempLccObj.classes.keys():
+            print "j is:", j
+            print "key:", key
+            print "classId:", self.tempLccObj.classes.values()[j].classId        
+            print "name:", self.tempLccObj.classes.values()[j].name        
+            print "uniqueValueIds:", self.tempLccObj.classes.values()[j].uniqueValueIds        
+            print "uniqueClassIds:", self.tempLccObj.classes.values()[j].uniqueClassIds        
+            print "attributes:", self.tempLccObj.classes.values()[j].attributes        
+            print "parentClass:",self.tempLccObj.classes.values()[j].parentClass
+            j = j + 1
+            print 
+                 
+        
+        # Input ClassId
+        classId, ok = QtGui.QInputDialog.getText(self, 'Class ID', 'Enter class id:')  # format ( self, dialog title, prompt)
+        classId = str(classId)
+        classId = classId.lower()
+        phrase = "ClassId is"
+
+        if classId:
+            print "Input is ", classId
+            title = "%s %s" % (phrase, classId)
+            
+            for key in self.tempLccObj.classes.keys():
+                if key == classId.lower():
+                    # error message for duplicate Class Id
+                    QMessageBox.warning(self, "ALERT - Class ID", "Id has already been used. Please enter another id ")
+                    classId = None
+                    return
+                
+            def cancel(self):
+                print "Canceled!!!!"
+                return
+
+            prompt = "%s %s" %("Enter class name for ", classId)
+            name, ok = QtGui.QInputDialog.getText(self, "%s %s" % (phrase, classId), prompt)
+            while not name or name == "":
+#                 self.cancelButton.clicked.connect(self.cancel)
+                print "Name is ", name
+                name, ok = QtGui.QInputDialog.getText(self, "%s %s" % (phrase, classId), "Please, enter a class name")
+                print "Name is now ", name
+                                                      
+            filter, ok = QtGui.QInputDialog.getText(self, 'Filter', 'Enter filter to use or leave blank for None') 
+                # (self, dialog title, prompt)
+#            if filter in filterList:
+#                print "Good Filter"
+#            else:
+#                filter = None
+            while not filter in filterList:
+                filter, ok = QtGui.QInputDialog.getText(self, 'Filter', 'Not valid filter.  Please reenter') 
+                    # (self, dialog title, prompt)
+                
+            #####
+            # check for filter
+            #####
+            print "Class id is %s, Class name is %s, Filter is %s" % (classId,name, filter)
+#            print  self.tempLccObj.classes.values(classId).classId
+
+            self.tempClassLCC = pylet.lcc.LandCoverClass()               # create a new LandCoverClass object
+            self.tempClassLCC.addClass(classId, name, filter, lcpField)
+            self.tempLccObj.classes[classId] = self.tempClassLCC
+            
+#            self.tempLccObj.classes.values()[classId].classId = classId
+#            self.tempLccObj.classes.values()[classId].name = name        
+#            print "uniqueValueIds:", self.tempLccObj.classes.values()[classId].uniqueValueIds        
+#            print "uniqueClassIds:", self.tempLccObj.classes.values()[classId].uniqueClassIds        
+#            print "attributes:", self.tempLccObj.classes.values()[classId].attributes        
+#            print "parentClass:",self.tempLccObj.classes.values()[classId].parentClass
+
+#            self.tempClassLCC = pylet.lcc.LandCoverClasses()
+#            self.tempClassLCC.addClass(text, text2)
+#            self.tempLccObj.classes[text] = self.tempClassLCC
+            print self.tempLccObj.classes.items()
+            
+#            print "topclevelclass: ", self.tempLccObj.classes.topLevelClasses.classId, self.tempLccObj.classes.topLevelClasses.name
+
+#        self.btn = QtGui.QPushButton("class id", self)
+#        self.btn.move(20,20)
+#        self.btn.clicked.connect(self.showClassId)
+#        
+#        self.classID = QtGui.QLineEdit(self)
+#        self.classID.move(130, 22)
+#        
+#        self.showClassId()
+        self.displayFile()                              # updates GUI to display correct values
+        
+    def showClassId(self):
+        print "in showClassId"
+#        text, ok = QtGui.QInputDialog.getText(self, 'Class ID', 'Enter class id:')
+
+       
+            
+#        if ok:
+#            self.classID.setText(str(text))
+#        def printDescendentClasses(landCoverClass, item_0, indentUnit, indentLevel):
+#            
+#            for childClass in landCoverClass.childClasses:
+#                assert isinstance(childClass, pylet.lcc.LandCoverClass)
+#                
+#                # childClass
+#                item_1 = QtGui.QTreeWidgetItem(item_0)
+#                item_1.setText(0, childClass.classId) #set id
+#                item_1.setText(1, childClass.name)   #set name
+#
+#                print indentUnit*indentLevel, childClass.classId, childClass.name
+#
+#                for childValueId in childClass.childValueIds:
+#                    
+#                    childItem = QtGui.QTreeWidgetItem(item_1)
+#                    childItem.setText(0, str(childValueId))
+#
+#                
+#                printDescendentClasses(childClass,item_1, indentUnit, indentLevel + 1)
+#
+#        self.ClassesTree.setSortingEnabled(False)
+#        
+#        print "this is ", self.tempLccObj.classes.topLevelClasses
+   
+#        if self.tempLccObj.classes.topLevelClasses:                     # could use a try:
+#            for topLevelClass in self.tempLccObj.classes.topLevelClasses:
+#                assert isinstance(topLevelClass, pylet.lcc.LandCoverClass)
+#                
+#                try:
+#                    item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
+#    
+#                    print 'this is toplevelClass', topLevelClass.classId, topLevelClass.name
+#    
+##                    item_1 = QTreeWidgetItem(item_0.setText(0, str(topLevelClass.classId)))
+#                except:
+#                    pass
+#                printDescendentClasses(topLevelClass, item_0, indent, 2)
+#
+#        else:                                                           # could use an except:
+#            print "in pass"
+#            pass
+#        print
+
+        self.displayFile()
+    def classesAddChildClassButton(self):
+        print "in add child class button"
+        
+    def classesEditClassButton(self):
+        print "in edit class button"
+        
+    def classesRemoveClassButton(self):
+        print "in remove class button"
