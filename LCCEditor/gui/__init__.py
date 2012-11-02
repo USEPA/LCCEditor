@@ -103,10 +103,10 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         """Gets the file name and creates a temporary file name """
         
         global fileName, tempFileName
-        
+
         # path will eventually be gotten from a config file through _init__
         self.fileName = QFileDialog.getOpenFileName(self,"Open File", 
-            "D:\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications", 
+            '/ATtILA2/src/ATtILA2/ToolboxSource/LandCoverClassifications/', 
             "LCC files (*.lcc)")[0] # might have to use '/home')
             
     def fileOpen(self):
@@ -139,6 +139,8 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         ten = "10"
         indent = "    "
         
+        print "in displayFile"
+        
         self.clearLccItems()
         
 
@@ -147,7 +149,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
       
         # Load values 
         for value in self.tempLccObj.values.values():                       # prints value for the Value Tree
-            assert isinstance(value, pylet.lcc.LandCoverValue)      # activates auto-completion      
+            assert isinstance(value, pylet.lcc.LandCoverValue)              # activates auto-completion      
 #            print value.valueId, value.name, value.excluded
             try:
 
@@ -174,14 +176,14 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
                 item_1 = QtGui.QTreeWidgetItem(item_0)
                 item_1.setText(0, childClass.classId) #set id
                 item_1.setText(1, childClass.name)   #set name
-                print (i*indent), childClass.classId, childClass.name
+#                print (i*indent), childClass.classId, childClass.name
 #                print indentUnit*indentLevel, childClass.classId, childClass.name
                 j = 2
                 for childValueId in childClass.childValueIds:
                     
                     childItem = QtGui.QTreeWidgetItem(item_1)
                     childItem.setText(0, str(childValueId))
-                    print (j * indent), childValueId
+#                    print (j * indent), childValueId
  
                 printDescendentClasses(childClass,item_1, indentUnit, indentLevel + 1)
                 j = j + 1
@@ -196,7 +198,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
 
                 item_0.setText(0, str(topLevelClass.classId))
                 item_0.setText(1, str(topLevelClass.name))
-                print topLevelClass.classId, topLevelClass.name
+#                print topLevelClass.classId, topLevelClass.name
 #                item_1 = QTreeWidgetItem(item_0.setText(0, str(topLevelClass.classId)))
             except:
                 pass
@@ -217,7 +219,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
         
         global tempLccObj
         indent = "    "
-        
+
         root_dir = os.path.join(".",'\ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications')
         outFileName = QFileDialog.getSaveFileName(self,'Save File',root_dir,"LCC files (*.lcc)")[0]
 #        print 'out file name is', outFileName
@@ -514,7 +516,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
 
         print "Class Items:"
         if self.tempLccObj.classes.items():
-            print self.tempLccObj.classes.items()
+            print self.tempLccObj.classes.items()           # print items from the classes dict00000
         else:
             print "    No Class Items"
         print
@@ -578,83 +580,28 @@ class MainWindow(_QMainWindow, Ui_MainWindow):
 #            print  self.tempLccObj.classes.values(classId).classId
 
             self.tempClassLCC = pylet.lcc.LandCoverClass()               # create a new LandCoverClass object
-            self.tempClassLCC.addClass(classId, name, filter, lcpField)
+            self.tempClassLCC.addClass(classId, name, filter, lcpField)   # populate the object 
             self.tempLccObj.classes[classId] = self.tempClassLCC
             
-#            self.tempLccObj.classes.values()[classId].classId = classId
-#            self.tempLccObj.classes.values()[classId].name = name        
-#            print "uniqueValueIds:", self.tempLccObj.classes.values()[classId].uniqueValueIds        
-#            print "uniqueClassIds:", self.tempLccObj.classes.values()[classId].uniqueClassIds        
-#            print "attributes:", self.tempLccObj.classes.values()[classId].attributes        
-#            print "parentClass:",self.tempLccObj.classes.values()[classId].parentClass
-
-#            self.tempClassLCC = pylet.lcc.LandCoverClasses()
-#            self.tempClassLCC.addClass(text, text2)
-#            self.tempLccObj.classes[text] = self.tempClassLCC
             print self.tempLccObj.classes.items()
             
-#            print "topclevelclass: ", self.tempLccObj.classes.topLevelClasses.classId, self.tempLccObj.classes.topLevelClasses.name
+            # print out topLevelClasses
+            for topLevelClass in self.tempLccObj.classes.topLevelClasses:
+                assert isinstance(topLevelClass, pylet.lcc.LandCoverClass)
+            
+                try:
+                    item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
+    
+                    item_0.setText(0, str(topLevelClass.classId))
+                    item_0.setText(1, str(topLevelClass.name))
+                    print topLevelClass.classId, topLevelClass.name
+                except:
+                    pass
 
-#        self.btn = QtGui.QPushButton("class id", self)
-#        self.btn.move(20,20)
-#        self.btn.clicked.connect(self.showClassId)
-#        
-#        self.classID = QtGui.QLineEdit(self)
-#        self.classID.move(130, 22)
-#        
-#        self.showClassId()
         self.displayFile()                              # updates GUI to display correct values
         
     def showClassId(self):
         print "in showClassId"
-#        text, ok = QtGui.QInputDialog.getText(self, 'Class ID', 'Enter class id:')
-
-       
-            
-#        if ok:
-#            self.classID.setText(str(text))
-#        def printDescendentClasses(landCoverClass, item_0, indentUnit, indentLevel):
-#            
-#            for childClass in landCoverClass.childClasses:
-#                assert isinstance(childClass, pylet.lcc.LandCoverClass)
-#                
-#                # childClass
-#                item_1 = QtGui.QTreeWidgetItem(item_0)
-#                item_1.setText(0, childClass.classId) #set id
-#                item_1.setText(1, childClass.name)   #set name
-#
-#                print indentUnit*indentLevel, childClass.classId, childClass.name
-#
-#                for childValueId in childClass.childValueIds:
-#                    
-#                    childItem = QtGui.QTreeWidgetItem(item_1)
-#                    childItem.setText(0, str(childValueId))
-#
-#                
-#                printDescendentClasses(childClass,item_1, indentUnit, indentLevel + 1)
-#
-#        self.ClassesTree.setSortingEnabled(False)
-#        
-#        print "this is ", self.tempLccObj.classes.topLevelClasses
-   
-#        if self.tempLccObj.classes.topLevelClasses:                     # could use a try:
-#            for topLevelClass in self.tempLccObj.classes.topLevelClasses:
-#                assert isinstance(topLevelClass, pylet.lcc.LandCoverClass)
-#                
-#                try:
-#                    item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
-#    
-#                    print 'this is toplevelClass', topLevelClass.classId, topLevelClass.name
-#    
-##                    item_1 = QTreeWidgetItem(item_0.setText(0, str(topLevelClass.classId)))
-#                except:
-#                    pass
-#                printDescendentClasses(topLevelClass, item_0, indent, 2)
-#
-#        else:                                                           # could use an except:
-#            print "in pass"
-#            pass
-#        print
 
         self.displayFile()
     def classesAddChildClassButton(self):
