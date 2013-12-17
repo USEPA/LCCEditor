@@ -11,5 +11,9 @@
         <file>img/coins_add.png</file>
         <file>img/database.png</file>
         <file>img/delete.png</file>
+        <file>img/chart_organisation_add.png</file>
+        <file>img/chart_organisation_delete.png</file>
+        <file>img/excluded.PNG</file>
+        <file>asterisk.png</file>
     </qresource>
 </RCC>

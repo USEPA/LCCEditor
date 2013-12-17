@@ -1,0 +1,11 @@
+diff a/LCCEditor/LCCEditor/gui/__init__.py b/LCCEditor/LCCEditor/gui/__init__.py	(rejected hunks)
+@@ -1488,7 +1488,8 @@
+                 # check to see if leaf
+                 for childValue in classObject.childValueIds:
+                     self.removeValueIdFromClassTree(childValue, self.tempLccObj.classes.topLevelClasses)
+-                self.tempLccObj.classes[classObject.classId].parentClass.childClasses.remove(
++                if self.tempLccObj.classes[classObject.classId].parentClass:
++                    self.tempLccObj.classes[classObject.classId].parentClass.childClasses.remove(
+                             self.tempLccObj.classes[classObject.classId])
+                 del self.tempLccObj.classes[classObject.classId]
+             elif valueId in classObject.getChildrenClasses():
