@@ -8,9 +8,22 @@
 
 """
 
-from PySide import QtCore, QtGui
-from PySide.QtCore import *
-from PySide.QtGui import *
+import PySide
+#from PySide import QtCore
+#from PySide import QtGui
+
+#from PySide.QtCore import *
+from PySide.QtCore import Signal
+from PySide.QtCore import Slot
+from PySide.QtCore import QTimer
+from PySide.QtCore import Qt
+
+#from PySide.QtGui import *
+from PySide.QtGui import QDialog
+from PySide.QtGui import QMessageBox
+from PySide.QtGui import QFileDialog
+from PySide.QtGui import QFont
+
 from PySide.QtGui import QMainWindow as _QMainWindow
 from PySide.QtGui import QPushButton as _QPushButton
 from PySide.QtGui import QApplication as _QApplication
@@ -22,7 +35,6 @@ from main_ui import Ui_MainWindow
 from removeValuePopupWindow import RemoveValuePopupWindow
 from xml.dom.minidom import Document, parse
 from xml.etree.ElementTree import Comment, Element, ElementTree
-import PySide  # needed for version
 import os, stat
 from stat import *
 import platform  # needed for platform details
@@ -33,6 +45,8 @@ import xml.etree.ElementTree as etree
 import operator
 from inspect import stack
 from addCoefficientPopupWindow import AddCoefficientPopupWindow
+import pdb
+
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -48,19 +62,19 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
     """ MainWindow 
         for the LCCEditor"""
     
-    @Slot(QtGui.QTableWidgetItem)
+    @Slot(PySide.QtGui.QTableWidgetItem)
     def onValueTableDrag(self, item):
         self.itemWanted = item
     
-    @Slot(QtGui.QTreeWidgetItem)
+    @Slot(PySide.QtGui.QTreeWidgetItem)
     def onClassTreeDrag(self, item):
         self.itemWanted = item
    
     global tempLccObj
     fileName = None
     itemWanted = None
-    valueItemWanted = Signal(QtGui.QTableWidgetItem)
-    classItemWanted = Signal(QtGui.QTreeWidgetItem)
+    valueItemWanted = Signal(PySide.QtGui.QTableWidgetItem)
+    classItemWanted = Signal(PySide.QtGui.QTreeWidgetItem)
     recentOpenFileList = None
     originalFileDirectoryPointer = None
         
@@ -69,6 +83,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         super(MainWindow, self).__init__(parent)  # Call the constructor of the Parent/inherited classes
         self.setupUi(self)
         self.changeTargetFileDirectory()
+#        self.ValuesDock.setGeometry(QtCore.QRect(0, 55, 509, 368))
         self.ActionAbout.triggered.connect(self.about)
         self.ActionHelp.triggered.connect(self.helpMenu)
         self.ActionOpen.triggered.connect(self.fileOpen)
@@ -94,13 +109,13 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.ClassesTree.itemChanged.connect(self.dropItemToClassTree)
         self.valueItemWanted.connect(self.onValueTableDrag)
         self.classItemWanted.connect(self.onClassTreeDrag)
-        self.ClassesTree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.ClassesTree.setContextMenuPolicy(PySide.QtCore.Qt.CustomContextMenu)
         self.ClassesTree.customContextMenuRequested.connect(self.classTreeContextMenu)
-        self.newCursor = QtGui.QCursor()
+        self.newCursor = PySide.QtGui.QCursor()
         self.ClassesTree.setCursor(self.newCursor)
         self.createActions()
         self.saveTime = QTimer(self)
-        self.connect(self.saveTime, SIGNAL("timeout()"), self.autoSave)
+        self.connect(self.saveTime, PySide.QtCore.SIGNAL("timeout(bool)"), self.autoSave)
         self.saveTime.start(constants.TimeInterval)
         self.recentOpenFileList = self.openRecentRestores()
         self.createRestoreRecentFile()
@@ -133,7 +148,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 
         """
         self.logProgress(stack()[0][3])
-                
+        self.saveTime.stop()
         if not self.tempLccObj.classes.topLevelClasses and not self.tempLccObj.values:
             return
         
@@ -142,6 +157,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         openFileName = open(outFileName, 'w')
         self.buildXMLTree().write(openFileName)
         openFileName.close()
+        self.saveTime.start()
         self.logProgress(stack()[0][3] + " END")
     
     def restoreAutoSave(self):
@@ -196,23 +212,23 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
         
-        self.addSiblingClassTreeClass = QtGui.QAction("Add &Sibiling", self,
+        self.addSiblingClassTreeClass = PySide.QtGui.QAction("Add &Sibiling", self,
                                                 shortcut="alt+S",
                                                 statusTip="Add Sibling Class",
                                                 triggered=self.classesAddSiblingClassButton)
-        self.addChildClassTreeClass = QtGui.QAction("Add &Child", self,
+        self.addChildClassTreeClass = PySide.QtGui.QAction("Add &Child", self,
                                                 shortcut="alt+C",
                                                 statusTip="Add Child Class",
                                                 triggered=self.classesAddChildClassButton)
-        self.insertValueIntoTreeClass = QtGui.QAction("&Insert Value", self,
+        self.insertValueIntoTreeClass = PySide.QtGui.QAction("&Insert Value", self,
                                                 shortcut="alt+I",
                                                 statusTip="Insert value into tree",
                                                 triggered=self.classesInsertValuesButton)
-        self.editClassTreeClass = QtGui.QAction("&Edit", self,
+        self.editClassTreeClass = PySide.QtGui.QAction("&Edit", self,
                                                 shortcut="alt+E",
                                                 statusTip="Exit target class",
                                                 triggered=self.classesEditClassButton)
-        self.removeClassTreeClass = QtGui.QAction("&Remove", self,
+        self.removeClassTreeClass = PySide.QtGui.QAction("&Remove", self,
                                                   shortcut="alt+D",
                                                   statusTip="Remove target class",
                                                   triggered=self.classesRemoveClassButton)
@@ -229,7 +245,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             menuItemRecentFile = self.menOpen_Recent.addAction(targetFile)
             menuItemRecentFile.setText(os.path.basename(targetFile))
             recentFile = lambda targetFile = targetFile: self.openRestore(targetFile)
-            self.connect(menuItemRecentFile, SIGNAL('triggered()'), recentFile)
+            self.connect(menuItemRecentFile, PySide.QtCore.SIGNAL("triggered()"), recentFile)
             self.menOpen_Recent.addAction(menuItemRecentFile)
         self.logProgress(stack()[0][3] + " END")
     
@@ -317,7 +333,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
                 
-        contextClassTreeMenu = QtGui.QMenu(self)
+        contextClassTreeMenu = PySide.QtGui.QMenu(self)
         contextClassTreeMenu.addAction(self.addSiblingClassTreeClass)
         if self.tempLccObj.classes.topLevelClasses:
             contextClassTreeMenu.addAction(self.addChildClassTreeClass)        
@@ -468,7 +484,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         """ 
         self.logProgress(stack()[0][3])
-         
         self.itemWanted = event
         self.logProgress(stack()[0][3] + " END")
     
@@ -493,20 +508,26 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
         
+        self.ClassesTree.itemChanged.disconnect(self.dropItemToClassTree)
         self.ClassesTree = None
-        self.ClassesTree = QtGui.QTreeWidget(self.ClassesWidget)
+        self.ClassesTree = PySide.QtGui.QTreeWidget(self.ClassesWidget)
         self.ClassesTree.setAcceptDrops(True)
         self.ClassesTree.setDragEnabled(False)
-        self.ClassesTree.setDragDropMode(QtGui.QAbstractItemView.DropOnly)
-        self.ClassesTree.setDefaultDropAction(QtCore.Qt.CopyAction)
+        self.ClassesTree.setDragDropMode(PySide.QtGui.QAbstractItemView.DragDrop)
+        self.ClassesTree.setDefaultDropAction(PySide.QtCore.Qt.CopyAction)
         self.ClassesTree.setRootIsDecorated(True)
         self.ClassesTree.setHeaderHidden(False)
         self.ClassesTree.setObjectName("ClassesTree")
         self.ClassesTree.header().setDefaultSectionSize(100)
         self.ClassesTree.header().setMinimumSectionSize(20)
         self.gridLayout_4.addWidget(self.ClassesTree, 2, 0, 1, 1)
-        self.ClassesTree.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "Class", None, QtGui.QApplication.UnicodeUTF8))
-        self.ClassesTree.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Description", None, QtGui.QApplication.UnicodeUTF8))
+        self.ClassesTree.headerItem().setText(0, PySide.QtGui.QApplication.translate("MainWindow", "Class", None, PySide.QtGui.QApplication.UnicodeUTF8))
+        self.ClassesTree.headerItem().setText(1, PySide.QtGui.QApplication.translate("MainWindow", "Description", None, PySide.QtGui.QApplication.UnicodeUTF8))
+        self.ClassesTree.itemPressed.connect(self.classesTreeCellClicked)
+        self.ClassesTree.itemChanged.connect(self.dropItemToClassTree)
+        self.ClassesTree.setContextMenuPolicy(PySide.QtCore.Qt.CustomContextMenu)
+        self.ClassesTree.customContextMenuRequested.connect(self.classTreeContextMenu)
+        self.ClassesTree.setCursor(self.newCursor)
         self.logProgress(stack()[0][3] + " END")
 
     def dropItemToClassTree(self, event):
@@ -527,16 +548,15 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         """
         self.logProgress(stack()[0][3])
-        
         # disconnects signal so event isn't called again during item alteration 
         self.ClassesTree.itemChanged.disconnect(self.dropItemToClassTree)
-        if isinstance(self.itemWanted, QtGui.QTableWidgetItem):
+        if isinstance(self.itemWanted, PySide.QtGui.QTableWidgetItem):
             self.dropValueToClassTree(event)
-        if isinstance(self.itemWanted, QtGui.QTreeWidgetItem):
+        if isinstance(self.itemWanted, PySide.QtGui.QTreeWidgetItem):
             self.dropClassToClassTree(event)
 
         # reconnect signal
-        self.ClassesTree.itemChanged.connect(self.dropItemToClassTree) 
+        self.ClassesTree.itemChanged.connect(self.dropItemToClassTree)
         self.displayFile()
         self.logProgress(stack()[0][3] + " END")
     
@@ -561,7 +581,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         """ 
         self.logProgress(stack()[0][3])
-         
+        print "hi" 
         def removeValueOfParentClasses(targetClass, valueList):
             self.logProgress(stack()[0][3])
             
@@ -600,8 +620,12 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             self.removeValueIdFromClassNode(int(self.itemWanted.text(0)), self.tempLccObj.classes[self.itemWanted.parent().text(0)])
             self.addValueToClassTree(self.tempLccObj.classes[event.parent().text(0)], event.text(0))
    
+        # If event is an in hat means it is a value therefore we treat it like a value
         if self.isInt(event.text(0)):
-            if self.isInt(event.parent().text(0)):
+            if not event.parent():
+                self.ClassesTree.invisibleRootItem().removeChild(event)
+                QMessageBox.warning(self, "Incorrect Value Placement","Must place a value in a class.")
+            elif self.isInt(event.parent().text(0)):
                 QMessageBox.warning(self, "Incorrect Value Placement",
                                  "Value can not have attributes.")                
             elif self.tempLccObj.classes[event.parent().text(0)].canAddValuesToClassNode():
@@ -609,6 +633,31 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             else:
                 QMessageBox.warning(self, "Incorrect Value Placement",
                                  "Classes can either have a class or a value as an attribute.")
+        elif not event.parent():
+            if not self.tempLccObj.classes[event.text(0)].parentClass:  # moving toplevel class to top level position
+                storeOpenNodes = self.storeExpandedBranches(self.itemWanted)
+                self.cloneNode(event, self.itemWanted)
+                self.removeInvalidObjectsFromClassTree(self.itemWanted)
+                tempTopLevelClassList = []
+                for item in self.tempLccObj.classes.topLevelClasses:
+                    tempTopLevelClassList.append(item)
+                del self.tempLccObj.classes.topLevelClasses [:]
+                for itemIndex in range(self.ClassesTree.topLevelItemCount()):
+                    self.tempLccObj.classes.topLevelClasses.append(tempTopLevelClassList[tempTopLevelClassList.index(self.tempLccObj.classes[self.ClassesTree.topLevelItem(itemIndex).text(0)])])
+                self.restoreExpansion(event, storeOpenNodes)
+            else:
+                uniqueValueIdList = []
+                uniqueClassIdList = []
+                movedClass = self.tempLccObj.classes[event.text(0)]
+                originalParentClass = self.tempLccObj.classes[self.itemWanted.parent().text(0)]
+                movedClass.parentClass = None
+                self.tempLccObj.classes.topLevelClasses.append(movedClass)
+                originalParentClass.childClasses.remove(movedClass)
+                uniqueValueIdList.extend(movedClass.uniqueValueIds)
+                uniqueClassIdList.extend(movedClass.uniqueClassIds)
+                uniqueClassIdList.extend([movedClass.classId])
+                removeValueOfParentClasses(originalParentClass, uniqueValueIdList)
+                removeClassOfParentClasses(originalParentClass, uniqueClassIdList)
         else:
             if self.isInt(event.parent().text(0)):
                 QMessageBox.warning(self, "Incorrect Value Placement",
@@ -616,6 +665,19 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             elif self.tempLccObj.classes[event.parent().text(0)].hasValues():
                 QMessageBox.warning(self, "Incorrect Value Placement",
                                  "Classes can either have a class or a value as an attribute.")
+            elif not self.tempLccObj.classes[event.text(0)].parentClass: # Moved object from top level
+                newParentClass = self.tempLccObj.classes[event.parent().text(0)]
+                uniqueValueIdList = []
+                uniqueClassIdList = []
+                movedClass = self.tempLccObj.classes[event.text(0)]
+                movedClass.parentClass = newParentClass
+                newParentClass.childClasses.append(movedClass)
+                self.tempLccObj.classes.topLevelClasses.remove(movedClass)
+                uniqueValueIdList.extend(movedClass.uniqueValueIds)
+                uniqueClassIdList.extend(movedClass.uniqueClassIds)
+                uniqueClassIdList.extend([movedClass.classId])
+                addValueOfParentClasses(newParentClass, uniqueValueIdList)
+                addClassOfParentClasses(newParentClass, uniqueClassIdList)   
             else:
                 parentClass = self.tempLccObj.classes[event.parent().text(0)]
                 uniqueValueIdList = []
@@ -788,7 +850,8 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.ValueTableWidget.clear()
         self.setValueParametersTable()
         self.CoefficientTableWidget.clear()
-        self.ClassesTree.clear()
+#        self.ClassesTree.clear()
+        self.resetClassTree()
         self.MetadataNameLineEdit.clear()                
         self.MetadataDescriptionTextEdit.clear() 
 
@@ -820,13 +883,13 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.tempLccObj = pylet.lcc.EditorLandCoverClassification()
         tempCoefficient = pylet.lcc.LandCoverCoefficient()
         tempCoefficient.populateCoefficient("IMPERVIOUS", "Percent Cover Total Impervious Area", "PCTIA", "P")
-        self.tempLccObj.coefficients[unicode("IMPERVIOUS")] = tempCoefficient
+        self.tempLccObj.coefficients["IMPERVIOUS"] = tempCoefficient
         tempCoefficient = pylet.lcc.LandCoverCoefficient()
         tempCoefficient.populateCoefficient("NITROGEN", "Estimated Nitrogen Loading Based on Land Cover", "N_Load", "A")
-        self.tempLccObj.coefficients[unicode("NITROGEN")] = tempCoefficient
+        self.tempLccObj.coefficients["NITROGEN"] = tempCoefficient
         tempCoefficient = pylet.lcc.LandCoverCoefficient()
         tempCoefficient.populateCoefficient("PHOSPHORUS", "Estimated Phosphorus Loading Based on Land Cover", "P_Load", "A")
-        self.tempLccObj.coefficients[unicode("PHOSPHORUS")] = tempCoefficient
+        self.tempLccObj.coefficients["PHOSPHORUS"] = tempCoefficient
         self.deactivateClassButtons()
         self.fileName = None
         self.setWindowTitle("Land Cover Classification Editor")        
@@ -919,7 +982,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             * Returns error message if not found.
                     
         """         
-        self.logProgress(stack()[0][3])
+#        self.logProgress(stack()[0][3])
                
         for value in self.tempLccObj.values.values():  # creates value for iterator
             assert isinstance(value, pylet.lcc.LandCoverValue)  # activates auto-completion   
@@ -931,7 +994,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             except:
                 pass
 
-        self.logProgress(stack()[0][3] + " END")
+#        self.logProgress(stack()[0][3] + " END")
             
         return "No Description"
    
@@ -968,7 +1031,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
             # Sorting the valud ids when displaying to allow for correct insertion in to the display
             for index, idValue in enumerate(idList):
-                populateId = QtGui.QTableWidgetItem(str(idValue))
+                populateId = PySide.QtGui.QTableWidgetItem(str(idValue))
                 populateId.setFlags(Qt.ItemIsEnabled | Qt.ItemIsDragEnabled | Qt.ItemIsSelectable)
                 self.ValueTableWidget.setItem(index, 0, populateId)
             
@@ -977,20 +1040,20 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
             while loopInteger < len(self.tempLccObj.values.keys()):
                 tempLCV = self.tempLccObj.values[int(self.ValueTableWidget.item(loopInteger, 0).text())]
-                populateName = QtGui.QTableWidgetItem(str(tempLCV.name))
-                populateExclusion = QtGui.QTableWidgetItem()
+                populateName = PySide.QtGui.QTableWidgetItem(str(tempLCV.name))
+                populateExclusion = PySide.QtGui.QTableWidgetItem()
                 populateExclusion.setFlags(Qt.ItemIsEnabled | Qt.ItemIsUserCheckable)
                 if(tempLCV.excluded):
-                    populateExclusion.setCheckState(QtCore.Qt.Checked)
+                    populateExclusion.setCheckState(PySide.QtCore.Qt.Checked)
                 else:
-                    populateExclusion.setCheckState(QtCore.Qt.Unchecked)
+                    populateExclusion.setCheckState(PySide.QtCore.Qt.Unchecked)
                     
                 self.ValueTableWidget.setItem(loopInteger, 1, populateName)
                 self.ValueTableWidget.setItem(loopInteger, 2, populateExclusion)
     
                 column = 3
                 while column < len(self.tempLccObj.coefficients.keys()) + 3:
-                    coffTableItem = QtGui.QTableWidgetItem(str(
+                    coffTableItem = PySide.QtGui.QTableWidgetItem(str(
                         tempLCV._coefficients[self.ValueTableWidget.horizontalHeaderItem(column).text()].value))
                     coffTableItem.setTextAlignment(Qt.AlignRight)
                     coffTableItem.setFlags(Qt.ItemIsEnabled | Qt.ItemIsEditable)
@@ -1009,10 +1072,10 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             self.setCoefficientParametersTable()
             
             for index, coefficientObj in enumerate(self.tempLccObj.coefficients.values()):
-                populateCoeffId = QtGui.QTableWidgetItem()
-                populateCoeffName = QtGui.QTableWidgetItem()
-                populateCoeffFieldName = QtGui.QTableWidgetItem()
-                populateCoeffAPMethod = QtGui.QTableWidgetItem()
+                populateCoeffId = PySide.QtGui.QTableWidgetItem()
+                populateCoeffName = PySide.QtGui.QTableWidgetItem()
+                populateCoeffFieldName = PySide.QtGui.QTableWidgetItem()
+                populateCoeffAPMethod = PySide.QtGui.QTableWidgetItem()
                 populateCoeffId.setText(coefficientObj.coefId)
                 populateCoeffName.setText(coefficientObj.name)
                 populateCoeffFieldName.setText(coefficientObj.fieldName)
@@ -1069,14 +1132,14 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                     * None
                             
                 """
-                self.logProgress(stack()[0][3])
+#                self.logProgress(stack()[0][3])
  
                 try:
                     for childClass in landCoverClass.childClasses:
                         assert isinstance(childClass, pylet.lcc.EditorLandCoverClass)
                         
                         # childClass
-                        item_1 = QtGui.QTreeWidgetItem(item_0)
+                        item_1 = PySide.QtGui.QTreeWidgetItem(item_0)
                         item_1.setFont(0, boldFont)
                         item_1.setText(0, childClass.classId)  # set id
                         item_1.setFont(1, boldFont)
@@ -1089,17 +1152,15 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                         for childValueId in childValueList:
                             if self.tempLccObj.values[childValueId].excluded:  # delete#
                                 continue  # delete#
-                            childItem = QtGui.QTreeWidgetItem(item_1)
+                            childItem = PySide.QtGui.QTreeWidgetItem(item_1)
                             childItem.setFont(0, smallFont)
                             childItem.setText(0, str(childValueId))
                             childItem.setFont(1, smallFont)
                             childItem.setText(1, self.findCorespondingLabel(childValueId))
                         printDescendentClasses(childClass, item_1, indentUnit, indentLevel + 1)
                 except:
-                    pass
-                
+                    print "big time error"
             self.ClassesTree.itemChanged.disconnect(self.dropItemToClassTree)
-            
             self.ClassesTree.setSortingEnabled(False)
        
             boldFont = QFont("Ariel", 10, QFont.Bold)
@@ -1111,7 +1172,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                     assert isinstance(topLevelClass, pylet.lcc.EditorLandCoverClass)
                     
                     try:
-                        item_0 = QtGui.QTreeWidgetItem(self.ClassesTree)
+                        item_0 = PySide.QtGui.QTreeWidgetItem(self.ClassesTree)
 
                         item_0.setFont(0, boldFont)
                         item_0.setText(0, str(topLevelClass.classId))
@@ -1125,7 +1186,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                             for childValueId in childValueList:
                                 if self.tempLccObj.values[childValueId].excluded:  # delete#
                                     continue  # delete#
-                                childItem = QtGui.QTreeWidgetItem(item_0)
+                                childItem = PySide.QtGui.QTreeWidgetItem(item_0)
                                 childItem.setText(0, str(childValueId))
                                 childItem.setText(1, self.findCorespondingLabel(childValueId))
                     except:
@@ -1137,10 +1198,10 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 
         # Main controls display file    
         
-        # list to hold which nodes are expanded                            
-        storeOpenNodes = []
+            
         # store all the expanded nodes for later re-expansion
-        storeOpenNodes = self.storeExpandedBranches(self.ClassesTree.topLevelItem, storeOpenNodes)
+        storeOpenNodes = self.storeExpandedBranches(None)
+
 
         # Clears out Model view
         self.clearLccItems()
@@ -1156,9 +1217,9 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         if self.tempLccObj.classes:
             displayClassesTree()
-            self.restoreExpansion(self.ClassesTree.topLevelItem, storeOpenNodes)
+
+            self.restoreExpansion(None, storeOpenNodes)
         
-#        print "object size:", self.getLccSize()
         self.logProgress(stack()[0][3] + " END")
     
     def getLccSize(self):
@@ -1276,7 +1337,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.logProgress(stack()[0][3])
 
         def indent(elem, level=0):
-            self.logProgress(stack()[0][3])
+#            self.logProgress(stack()[0][3])
 
             i = "\n" + level * "    "
             if len(elem):
@@ -1291,7 +1352,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             else:
                 if level and (not elem.tail or not elem.tail.strip()):
                     elem.tail = i
-        
         # create the root element
         root = Element('lccSchema')
         tree = ElementTree(root)
@@ -1326,7 +1386,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
     """)
         root.append(coeffText)
         coeffs = Element(constants.XmlElementCoefficients)
-
+        
         for coef in self.tempLccObj.coefficients:
             tempid = self.tempLccObj.coefficients[str(coef)].coefId
             tempname = self.tempLccObj.coefficients[str(coef)].name
@@ -1362,7 +1422,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
     """)
         root.append(valText)
         values = Element(constants.XmlElementValues)
-        
         # get the values
         for key in sorted(self.tempLccObj.values.iteritems(), key=operator.itemgetter(0)):
             valDict = {}
@@ -1372,22 +1431,22 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 valDict[constants.XmlAttributeNodata] = 'true'
             val = Element(constants.XmlAttributeValue, attrib=valDict)
             values.append(val)
-            
         # get the coefficients for each value
             for coef in key[1]._coefficients:
                 coefDict = {}
                 coefDict[constants.XmlAttributeId] = key[1]._coefficients[str(coef)].coefId
-                if key[1]._coefficients[str(coef)] == 0.0:
+                if key[1]._coefficients[str(coef)].value == 0.0:
                     coefDict[constants.XmlAttributeValue] = ""
                 else:
                     coefDict[constants.XmlAttributeValue] = str(key[1]._coefficients[str(coef)].value)
-                coef = Element(constants.XmlElementCoefficient, attrib=coefDict)
-                val.append(coef)
+                if coefDict["value"] == "":
+                    pass
+                coefe = Element(constants.XmlElementCoefficient, attrib=coefDict)
+                val.append(coefe)
         root.append(values)
         if self.tempLccObj.classes.topLevelClasses == None:
             indent(tree.getroot())
             return tree
-
         # add the class text and the class nodes
 #         classText = etree.Comment("""
 #         * The "classes" node contains values grouped into classes.
@@ -1422,10 +1481,9 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         root.append(classText)
         classes = Element('classes')
         root.append(classes)
-
         # function to find child classes of the parent classes
         def printDescendentClasses(landCoverClass, classE):
-            self.logProgress(stack()[0][3])
+#            self.logProgress(stack()[0][3])
 
             if landCoverClass.childClasses:
                 for childClass in landCoverClass.childClasses:
@@ -1467,6 +1525,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 
         # indent the output correctly and the write to file
         indent(tree.getroot())
+        
 
         self.logProgress(stack()[0][3] + " END")
 
@@ -1605,7 +1664,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.ValueTableWidget.setSortingEnabled(False)
         self.ValueTableWidget.setRowCount(len(self.tempLccObj.values.keys()))
         self.ValueTableWidget.setColumnCount(columncount)
-        self.ValueTableWidget.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.ValueTableWidget.setSelectionMode(PySide.QtGui.QAbstractItemView.SingleSelection)
         self.ValueTableWidget.setColumnWidth(0, 50)
         self.ValueTableWidget.setColumnWidth(1, 225)
         self.ValueTableWidget.setColumnWidth(2, 15)
@@ -1972,7 +2031,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 
         self.logProgress(stack()[0][3] + " END")
              
-    def storeExpandedBranches(self, passedList, storeOpenNodes):
+    def storeExpandedBranches(self, topNode):
         """ 
             Stores which branches are open for later redisplaying.
         
@@ -1994,31 +2053,38 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.logProgress(stack()[0][3])
 
         def createListOfWidgetItems(widgetAddress, storeOpenNodes):
-            if not widgetAddress:
-                return
-            if widgetAddress.isExpanded():
-                storeOpenNodes.append(str(widgetAddress.text(0)))
-            # reason we are not using an iterator is we need the index number to access the child(#)
-            index = 0
-            while index < widgetAddress.childCount():
-                createListOfWidgetItems(widgetAddress.child(index), storeOpenNodes)
-                index = index + 1
-        # Establish initial List from QTwidget model        
-        loopIndex = 0
-        topList = []
-        while 1:
-            if not passedList(loopIndex):
-                break
-            topList.append(passedList(loopIndex))
-            loopIndex = loopIndex + 1
-        for nodeWidgetAddress in topList:
-            createListOfWidgetItems(nodeWidgetAddress, storeOpenNodes)
+            temp = PySide.QtGui.QTreeWidgetItem()
+            for index in range(widgetAddress.childCount()):
+                temp = widgetAddress.child(index)
+                if self.isInt(temp.text(0)):
+                    continue
+                if temp.isExpanded():
+                    storeOpenNodes.append(temp.text(0))
+                    if(temp.childCount() != 0):
+                        createListOfWidgetItems(temp,storeOpenNodes)
 
+        storeOpenNodes = []
+
+        # list to hold which nodes are expanded                            
+        passedList = []
+        if not topNode:
+            for itemIndex in range(self.ClassesTree.topLevelItemCount()):
+                passedList.append(self.ClassesTree.topLevelItem(itemIndex))
+        else:
+            passedList.append(topNode)
+        # Establish initial List from QtWidget model
+        for item in passedList:
+            if self.isInt(item.text(0)):
+                continue
+            if item.isExpanded():
+                storeOpenNodes.append(item.text(0))
+                if(item.childCount() != 0):
+                    createListOfWidgetItems(item, storeOpenNodes)
+                   
         self.logProgress(stack()[0][3] + " END")
-
         return storeOpenNodes
     
-    def restoreExpansion(self, passedList, openNodes):
+    def restoreExpansion(self, topNode,openNodes):
         """ 
             Restore a new classTree to previously saved expansion state.
         
@@ -2040,29 +2106,33 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
   
-        def expandListOfWidgetItems(widgetAddress, storeOpenNodes):
-            self.logProgress(stack()[0][3])
+        def expandListOfWidgetItems(widgetAddress, openNodes):
+#            self.logProgress(stack()[0][3])
+            temp = PySide.QtGui.QTreeWidgetItem()
+            for index in range(widgetAddress.childCount()):
+                temp = widgetAddress.child(index)
+                if self.isInt(temp.text(0)):
+                    continue
+                if temp.text(0) in openNodes:
+                    temp.setExpanded(True)
+                    expandListOfWidgetItems(temp, openNodes)
 
-            if not widgetAddress:
-                return
-            if widgetAddress.text(0) in openNodes:
-                widgetAddress.setExpanded(True)
-            # reason we are not using an iterator is we need the index number to access the child(#)
-            index = 0
-            while index < widgetAddress.childCount():
-                expandListOfWidgetItems(widgetAddress.child(index), storeOpenNodes)
-                index = index + 1
-        # Establish initial List from QTwidget model        
-        loopIndex = 0
-        topList = []
-        while 1:
-            if not passedList(loopIndex):
-                break
-            topList.append(passedList(loopIndex))
-            loopIndex = loopIndex + 1
-        for nodeWidgetAddress in topList:
-            expandListOfWidgetItems(nodeWidgetAddress, openNodes)
-
+        # list to hold which nodes are expanded                            
+        passedList = []
+        if not topNode:
+            for itemIndex in range(self.ClassesTree.topLevelItemCount()):
+                passedList.append(self.ClassesTree.topLevelItem(itemIndex))
+        else:
+            passedList.append(topNode)
+        # Establish initial List from QTwidget model    
+        for item in passedList:
+            if self.isInt(item.text(0)):
+                continue
+            if item.text(0) in openNodes:
+                item.setExpanded(True)
+                if(item.childCount() != 0):
+                    expandListOfWidgetItems(item, openNodes)
+                
         self.logProgress(stack()[0][3] + " END")
 
     def classesAddSiblingClassButton(self):
@@ -2459,14 +2529,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         """
         self.logProgress(stack()[0][3])
-
-        try:
-            int(passedString)
-            return True
-        except:
-            return False
-
-        self.logProgress(stack()[0][3] + " END")
+        return unicode(passedString).isnumeric()
     
     def isFloat(self, passedString):
         """ 
@@ -2487,34 +2550,68 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
 
-        try:
-            float(passedString)
-            return True
-        except:
-            return False 
-
-        self.logProgress(stack()[0][3] + " END")
+        return unicode(passedString).isdecimal()
           
     def initLog(self):
         logFile = os.path.join('AutoSave','log.lfn')
         os.remove(logFile)
         
     def logProgress(self, message):
+        testStackSize = str(stack().__sizeof__())
         logString = "log.lfn"
         logFile = os.path.join('AutoSave',logString)
         logFile = open(logFile,'a')
-        logFile.write(message + "\n")
+        logFile.write(message + " Current Stack size " + testStackSize + "\n")
+        tempStack = stack()
+        tempBuffer = ""
+        for iter in reversed(tempStack):
+            logFile.write(str(iter[3]) + "\n")
+        logFile.write("\n")
+
         logFile.close()
         
+    def removeInvalidObjectsFromClassTree(self, removedObject):
+        
+        self.logProgress(stack()[0][3])
+
+        def recursiveRemoval(rootObject):
+            for index in range(rootObject.childCount()):
+                if not rootObject.child(index):
+                    continue
+                if rootObject.child(index).childCount() != 0:
+                    recursiveRemoval(rootObject.child(index))
+                rootObject.removeChild(rootObject.child(index))
+        if removedObject.childCount() != 0:
+            recursiveRemoval(removedObject)
+        if not removedObject.parent(): # This is a top level item
+            self.ClassesTree.invisibleRootItem().removeChild(removedObject)
+        else:
+            removedObject.parent().removeChild(removedObject)
+        
+        self.logProgress(stack()[0][3] + " END")
+        
+    def cloneNode(self, topNewNode, topOldNode):
+
+        self.logProgress(stack()[0][3])
+        
+        for index in range(topOldNode.childCount()):
+            if not topNewNode:
+                return
+            topNewNode.addChild(topOldNode.child(index).clone())
+            self.cloneNode(topNewNode.child(index), topOldNode.child(index))
+
+        self.logProgress(stack()[0][3] + " END")
+       
 if __name__ == '__main__':
     """ Launch the MainWindow for the LCCEditor"""
      
     # Every PySide application must create an application object.  The sys.argv parameter is a list of command line args 
-    app = QApplication(_sys.argv)
+    app = _QApplication(_sys.argv)
     frame = MainWindow()
     frame.show()
     app.exec_()
-
+    
+    
 """ 
     ONE_LINE_SUMMARY 
     

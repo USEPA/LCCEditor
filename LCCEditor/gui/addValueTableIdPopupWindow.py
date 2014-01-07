@@ -6,12 +6,12 @@
 
 import PySide
 from PySide import QtCore, QtGui
-from PySide.QtGui import *
+#from PySide.QtGui import *
 import pylet
 from inspect import stack
 import os
 
-class AddValueTableIdPopupWindow(QDialog):
+class AddValueTableIdPopupWindow(QtGui.QDialog):
     def __init__(self, main):
 
         # initialize the class from the super class
@@ -22,7 +22,7 @@ class AddValueTableIdPopupWindow(QDialog):
         
         #self.main.notify.notify.emit('In emit')
         # create layout
-        self.layout=QGridLayout()                   # create a grid widget
+        self.layout= QtGui.QGridLayout()                   # create a grid widget
         self.layout.setSpacing(10)                  # set the spacing between widgets
 
         self.valueTableWidgetDialog = QtGui.QTableWidget()
@@ -65,10 +65,10 @@ class AddValueTableIdPopupWindow(QDialog):
 #                 tempIcon = QIcon()
 #                 tempIcon.addPixmap(tempMap)
 #                 temp = QTableWidgetItem(tempIcon, iterator)
-                temp = QTableWidgetItem("* " + iterator)
+                temp = QtGui.QTableWidgetItem("* " + iterator)
                 temp.setTextAlignment(QtCore.Qt.AlignLeft)
             else:
-                temp = QTableWidgetItem(iterator)
+                temp = QtGui.QTableWidgetItem(iterator)
                 
             self.valueTableWidgetDialog.setHorizontalHeaderItem(index, temp)
             
@@ -86,11 +86,11 @@ class AddValueTableIdPopupWindow(QDialog):
 
         # -- create label and button widgets
 #         self.requiredLabel = QLabel('<img src="' + asteriskPath + '" width="8" height="8">This is a required field.')
-        self.requiredLabel = QLabel('* This is a required field.')
-        self.okButton = QPushButton('OK')
-        self.cancelButton = QPushButton('Cancel')
-        self.addRowButton = QPushButton("Add Row")
-        self.removeSelectedRowButton = QPushButton("Remove Selected Row")
+        self.requiredLabel = QtGui.QLabel('* This is a required field.')
+        self.okButton = QtGui.QPushButton('OK')
+        self.cancelButton = QtGui.QPushButton('Cancel')
+        self.addRowButton = QtGui.QPushButton("Add Row")
+        self.removeSelectedRowButton = QtGui.QPushButton("Remove Selected Row")
         
         # -- connect buttons to their event handlers
         self.okButton.clicked.connect(self.okButtonClicked)
@@ -100,7 +100,7 @@ class AddValueTableIdPopupWindow(QDialog):
         
         #self.okButton.clicked.connect(self.wakeup)
         # -- create a new layout view for buttons
-        self.buttonBox = QHBoxLayout()                  # create a QHBoxLayout object
+        self.buttonBox = QtGui.QHBoxLayout()                  # create a QHBoxLayout object
         self.buttonBox.addWidget(self.requiredLabel)
         self.buttonBox.addStretch(1)                    # set stretch requirements
         self.buttonBox.addWidget(self.addRowButton)

@@ -5,7 +5,7 @@
 """
 
 from PySide import QtCore, QtGui
-from PySide.QtGui import *
+#from PySide.QtGui import *
 from inspect import stack
 import os
 from PySide.QtCore import QRegExp
@@ -54,10 +54,10 @@ class AddClassIdPopupWindow(QtGui.QDialog):
 #                 tempIcon = QIcon()
 #                 tempIcon.addPixmap(tempMap)
 #                 temp = QTableWidgetItem(tempIcon, iterator)
-                temp = QTableWidgetItem("* " + iterator)
+                temp = QtGui.QTableWidgetItem("* " + iterator)
                 temp.setTextAlignment(QtCore.Qt.AlignLeft)
             else:
-                temp = QTableWidgetItem(iterator)
+                temp = QtGui.QTableWidgetItem(iterator)
                 
             self.addClassTableWidget.setHorizontalHeaderItem(index, temp)
             
@@ -81,9 +81,9 @@ class AddClassIdPopupWindow(QtGui.QDialog):
                        
         # -- create label and button widgets
 #         self.requiredLabel = QLabel('<img src="' + asteriskPath + '" width="8" height="8"> This is a required field.')
-        self.requiredLabel = QLabel('* This is a required field.')
-        self.okButton = QPushButton('OK')
-        self.cancelButton = QPushButton('Cancel')
+        self.requiredLabel = QtGui.QLabel('* This is a required field.')
+        self.okButton = QtGui.QPushButton('OK')
+        self.cancelButton = QtGui.QPushButton('Cancel')
         
         # -- connect ok and cancel buttons to their event handlers
         self.okButton.clicked.connect(self.okButtonClicked)
@@ -91,7 +91,7 @@ class AddClassIdPopupWindow(QtGui.QDialog):
         #self.okButton.clicked.connect(self.wakeup)
          
         # -- create a new layout view for buttons
-        self.buttonBox = QHBoxLayout()                  # create a QHBoxLayout object
+        self.buttonBox = QtGui.QHBoxLayout()                  # create a QHBoxLayout object
         self.buttonBox.addWidget(self.requiredLabel)
         self.buttonBox.addStretch(1)                    # set stretch requirements
         self.buttonBox.addWidget(self.okButton)         # add ok Button to interface
@@ -167,7 +167,7 @@ class AddClassIdPopupWindow(QtGui.QDialog):
         ## compare if classId is in key references of main lcc object
         ## by comparing keys of landCoverclasss dictionary 
         ## if found, we change error message and change flag to recall new dialog
-        if self.addClassTableWidget.item(0,0).text() in self.main.tempLccObj.classes.keys():
+        if self.addClassTableWidget.item(0,0).text().lower() in self.main.tempLccObj.classes.keys():
             self.errorMessage.setText("<font color=red>CLASS</font> already exists in Class Tree")
             focusOnError(0)
             return False
@@ -176,11 +176,11 @@ class AddClassIdPopupWindow(QtGui.QDialog):
         ##  checkreference is an iterator of LandCoverclass objects
         ## which we iterate over to find if name exists in the class tree 
         ## if isName returns true on match, we change error message and change flag to recall new dialog
-        for checkReference in self.main.tempLccObj.classes.values():
-            if checkReference.isName(self.addClassTableWidget.item(0, 1).text()):           
-                self.errorMessage.setText("The <font color=red>DESCRIPTION</font> already exists in Class Tree")
-                focusOnError(1)
-                return False
+#         for checkReference in self.main.tempLccObj.classes.values():
+#             if checkReference.isName(self.addClassTableWidget.item(0, 1).text()):           
+#                 self.errorMessage.setText("The <font color=red>DESCRIPTION</font> already exists in Class Tree")
+#                 focusOnError(1)
+#                 return False
         
         index = 2
         

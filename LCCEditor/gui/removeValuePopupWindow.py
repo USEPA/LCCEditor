@@ -6,10 +6,10 @@
 '''
 import PySide
 from PySide import QtCore, QtGui
-from PySide.QtGui import *
+#from PySide.QtGui import *
 from inspect import stack
 
-class RemoveValuePopupWindow(QDialog):
+class RemoveValuePopupWindow(QtGui.QDialog):
     '''
     classdocs
     '''   
@@ -24,7 +24,7 @@ class RemoveValuePopupWindow(QDialog):
 
         self.main = main
         # create layout
-        self.layout=QGridLayout()                   # create a grid widget
+        self.layout= QtGui.QGridLayout()                   # create a grid widget
         self.layout.setSpacing(10)                  # set the spacing between widgets
 
         # Create widgets and add them to the layout
@@ -32,8 +32,8 @@ class RemoveValuePopupWindow(QDialog):
         # -- valueId Widget
         # ---- create IntValidator widget
         # -- class filter widget
-        self.idRemoveLabel = QLabel("Current List of Values")         # create class Id name label widget
-        self.idRemoveSelectionField = QListWidget()
+        self.idRemoveLabel = QtGui.QLabel("Current List of Values")         # create class Id name label widget
+        self.idRemoveSelectionField = QtGui.QListWidget()
         #tempcont = []
         #for number in self.main.tempLccObj.values.keys():
         #   tempcont.append(str(number))
@@ -48,8 +48,8 @@ class RemoveValuePopupWindow(QDialog):
         self.layout.addWidget(self.idRemoveSelectionField, 0, 1)      # add class Idd name field widget to layout
 
         # -- create ok and cancel buttons widget
-        self.okButton = QPushButton('OK')
-        self.cancelButton = QPushButton('Cancel')
+        self.okButton = QtGui.QPushButton('OK')
+        self.cancelButton = QtGui.QPushButton('Cancel')
 
         # -- connect ok and cancel buttons to their event handlers
         self.okButton.clicked.connect(self.okButtonClicked)
@@ -57,7 +57,7 @@ class RemoveValuePopupWindow(QDialog):
 
         #self.okButton.clicked.connect(self.wakeup)
         # -- create a new layout view for buttons
-        self.buttonBox = QHBoxLayout()                  # create a QHBoxLayout object
+        self.buttonBox = QtGui.QHBoxLayout()                  # create a QHBoxLayout object
         self.buttonBox.addStretch(1)                    # set stretch requirements
         self.buttonBox.addWidget(self.okButton)         # add ok Button to interface
         self.buttonBox.addWidget(self.cancelButton)     # add cancel button to interface

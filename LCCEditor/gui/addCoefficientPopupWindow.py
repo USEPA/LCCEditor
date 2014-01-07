@@ -7,13 +7,13 @@
 
 import PySide
 from PySide import QtCore, QtGui
-from PySide.QtGui import *
+#from PySide.QtGui import *
 from inspect import stack
 import os
 from PySide.QtCore import QRegExp
 import pylet
 
-class AddCoefficientPopupWindow(QDialog):
+class AddCoefficientPopupWindow(QtGui.QDialog):
     '''
     classdocs
     '''
@@ -31,7 +31,7 @@ class AddCoefficientPopupWindow(QDialog):
         
         #self.main.notify.notify.emit('In emit')
         # create layout
-        self.layout=QGridLayout()                   # create a grid widget
+        self.layout=QtGui.QGridLayout()                   # create a grid widget
         self.layout.setSpacing(10)                  # set the spacing between widgets
 
         self.coefficientTableWidgetDialog = QtGui.QTableWidget()
@@ -58,13 +58,13 @@ class AddCoefficientPopupWindow(QDialog):
         self.coefficientTableWidgetDialog.setCellWidget(0, 3, tempBox)
 
         for index, iterator in enumerate(headerLabels):
-            tempMap = QPixmap()
+            tempMap = QtGui.QPixmap()
             asteriskPath = os.path.join(main.originalFileDirectoryPointer, "img\\asterisk.png")
             tempMap.load(asteriskPath)
             tempMap = tempMap.scaled(QtCore.QSize(8,8))
-            tempIcon = QIcon()
+            tempIcon = QtGui.QIcon()
             tempIcon.addPixmap(tempMap)
-            temp = QTableWidgetItem(tempIcon, iterator)
+            temp = QtGui.QTableWidgetItem(tempIcon, iterator)
             temp.setTextAlignment(QtCore.Qt.AlignLeft)
                 
             self.coefficientTableWidgetDialog.setHorizontalHeaderItem(index, temp)
@@ -77,11 +77,11 @@ class AddCoefficientPopupWindow(QDialog):
         self.layout.addWidget(self.errorMessage, 3, 1, 2, 1)
 
         # -- create label and button widgets
-        self.requiredLabel = QLabel('<img src="' + asteriskPath + '" width="8" height="8">This is a required field.')
-        self.okButton = QPushButton('OK')
-        self.cancelButton = QPushButton('Cancel')
-        self.addRowButton = QPushButton("Add Row")
-        self.removeSelectedRowButton = QPushButton("Remove Selected Row")
+        self.requiredLabel = QtGui.QLabel('<img src="' + asteriskPath + '" width="8" height="8">This is a required field.')
+        self.okButton = QtGui.QPushButton('OK')
+        self.cancelButton = QtGui.QPushButton('Cancel')
+        self.addRowButton = QtGui.QPushButton("Add Row")
+        self.removeSelectedRowButton = QtGui.QPushButton("Remove Selected Row")
         
         # -- connect buttons to their event handlers
         self.okButton.clicked.connect(self.okButtonClicked)
@@ -91,7 +91,7 @@ class AddCoefficientPopupWindow(QDialog):
         
         #self.okButton.clicked.connect(self.wakeup)
         # -- create a new layout view for buttons
-        self.buttonBox = QHBoxLayout()                  # create a QHBoxLayout object
+        self.buttonBox = QtGui.QHBoxLayout()                  # create a QHBoxLayout object
         self.buttonBox.addWidget(self.requiredLabel)
         self.buttonBox.addStretch(1)                    # set stretch requirements
         self.buttonBox.addWidget(self.addRowButton)
@@ -175,7 +175,7 @@ class AddCoefficientPopupWindow(QDialog):
             
             # This evaluates whether Id is letters
             rx = QRegExp("[A-Za-z]{,}")
-            validator = QRegExpValidator(rx ,self)
+            validator = QtGui.QRegExpValidator(rx ,self)
             coefIdValid =  validator.validate(self.coefficientTableWidgetDialog.item(0,0).text(), 0)
             
             if coefIdValid[0] != QtGui.QValidator.State.Acceptable:

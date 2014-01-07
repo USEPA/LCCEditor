@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sun Dec 15 19:49:30 2013
+# Created: Sat Jan 04 17:17:51 2014
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -135,6 +135,11 @@ class Ui_MainWindow(object):
         self.ToolBar.setObjectName("ToolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.ToolBar)
         self.ValuesDock = QtGui.QDockWidget(MainWindow)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ValuesDock.sizePolicy().hasHeightForWidth())
+        self.ValuesDock.setSizePolicy(sizePolicy)
         self.ValuesDock.setMinimumSize(QtCore.QSize(509, 368))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -214,7 +219,12 @@ class Ui_MainWindow(object):
         self.ValuesDock.setWidget(self.ValuesDockContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.ValuesDock)
         self.CoefficientDock = QtGui.QDockWidget(MainWindow)
-        self.CoefficientDock.setMinimumSize(QtCore.QSize(509, 172))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.CoefficientDock.sizePolicy().hasHeightForWidth())
+        self.CoefficientDock.setSizePolicy(sizePolicy)
+        self.CoefficientDock.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setWeight(75)
@@ -269,7 +279,12 @@ class Ui_MainWindow(object):
         self.CoefficientDock.setWidget(self.dockWidgetContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.CoefficientDock)
         self.MetadataDock = QtGui.QDockWidget(MainWindow)
-        self.MetadataDock.setMinimumSize(QtCore.QSize(509, 177))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.MetadataDock.sizePolicy().hasHeightForWidth())
+        self.MetadataDock.setSizePolicy(sizePolicy)
+        self.MetadataDock.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setWeight(75)
