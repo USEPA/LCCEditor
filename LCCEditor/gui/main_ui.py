@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sat Jan 04 17:17:51 2014
+# Created: Thu Jan 09 07:38:12 2014
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -224,7 +224,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.CoefficientDock.sizePolicy().hasHeightForWidth())
         self.CoefficientDock.setSizePolicy(sizePolicy)
-        self.CoefficientDock.setMinimumSize(QtCore.QSize(0, 0))
+        self.CoefficientDock.setMinimumSize(QtCore.QSize(89, 143))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setWeight(75)
@@ -284,7 +284,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.MetadataDock.sizePolicy().hasHeightForWidth())
         self.MetadataDock.setSizePolicy(sizePolicy)
-        self.MetadataDock.setMinimumSize(QtCore.QSize(0, 0))
+        self.MetadataDock.setMinimumSize(QtCore.QSize(89, 177))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setWeight(75)

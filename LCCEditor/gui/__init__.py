@@ -820,9 +820,9 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.logProgress(stack()[0][3])
         
         # Provides the directory name of the path of the running file + the name of the help file.
-        pathname = os.path.dirname(_sys.argv[0]) + "\TEMP.chm"
+        pathname = os.path.dirname(_sys.argv[0]) + "\help.chm"
         # Starts the file at the specified path
-        os.startfile(pathname)
+#        os.startfile(pathname)
 
         self.logProgress(stack()[0][3] + " END")
     
@@ -1436,7 +1436,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 coefDict = {}
                 coefDict[constants.XmlAttributeId] = key[1]._coefficients[str(coef)].coefId
                 if key[1]._coefficients[str(coef)].value == 0.0:
-                    coefDict[constants.XmlAttributeValue] = ""
+                    coefDict[constants.XmlAttributeValue] = "0.0"
                 else:
                     coefDict[constants.XmlAttributeValue] = str(key[1]._coefficients[str(coef)].value)
                 if coefDict["value"] == "":
@@ -2549,8 +2549,10 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         """
         self.logProgress(stack()[0][3])
-
-        return unicode(passedString).isdecimal()
+        try:
+            return float(passedString)
+        except ValueError:
+            return False
           
     def initLog(self):
         logFile = os.path.join('AutoSave','log.lfn')
