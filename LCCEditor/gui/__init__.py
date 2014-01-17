@@ -46,7 +46,8 @@ import operator
 from inspect import stack
 from addCoefficientPopupWindow import AddCoefficientPopupWindow
 import pdb
-
+import subprocess
+import re
 
 VERSION = '0.0.1'
 TITLE = "About Land Cover Classification Editor (LCCEditor)"
@@ -115,7 +116,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.ClassesTree.setCursor(self.newCursor)
         self.createActions()
         self.saveTime = QTimer(self)
-        self.connect(self.saveTime, PySide.QtCore.SIGNAL("timeout(bool)"), self.autoSave)
+        self.connect(self.saveTime, PySide.QtCore.SIGNAL("timeout()"), self.autoSave)
         self.saveTime.start(constants.TimeInterval)
         self.recentOpenFileList = self.openRecentRestores()
         self.createRestoreRecentFile()
@@ -153,7 +154,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             return
         
         outFileName = os.path.join('AutoSave', constants.AutoSaveFileName)
-                   
+#        print 'path is ', os.path           
         openFileName = open(outFileName, 'w')
         self.buildXMLTree().write(openFileName)
         openFileName.close()
@@ -272,7 +273,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             workspace = os.path.join('AutoSave', 'LCC.wsp')
             workspace = open(workspace, "r")
         except:
-            print "no file openRecentRestores"
+#            print "no file openRecentRestores"
             return []
         
         bufferRecentFiles = []
@@ -581,7 +582,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             
         """ 
         self.logProgress(stack()[0][3])
-        print "hi" 
         def removeValueOfParentClasses(targetClass, valueList):
             self.logProgress(stack()[0][3])
             
@@ -799,7 +799,13 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         QMessageBox.about(self, TITLE, ABOUT_MESSAGE)
 
         self.logProgress(stack()[0][3] + " END")
-    
+        
+    def is_running(self, process):
+        s = subprocess.Popen(["ps", "axw"], stdout=subprocess.PIPE)
+        for x in s.stdout:
+            if re.search(process, x):
+                return True
+        return False    
     def helpMenu(self):
         """ 
             Opens LLCEditor Help file
@@ -818,14 +824,31 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             * None
         """
         self.logProgress(stack()[0][3])
-        
         # Provides the directory name of the path of the running file + the name of the help file.
-        pathname = os.path.dirname(_sys.argv[0]) + "\help.chm"
+#        pathname = os.path.dirname(_sys.argv[0]) + "\help.chm"
         # Starts the file at the specified path
-#        os.startfile(pathname)
+        # Release Copy
+#         helpFileAddress = self.originalFileDirectoryPointer[:-12] \
+#                     + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
+
+        helpFileAddress = self.originalFileDirectoryPointer.rstrip("scripts\dist/") \
+                    + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
+        # David's computer
+#         helpFileAddress = self.originalFileDirectoryPointer \
+#                     + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
+
+
+        print helpFileAddress
+        openHelpFileToSpecificLocation = subprocess.Popen("hh.exe " + helpFileAddress + "::/ExternalLCCEditor.htm")
+        openHelpFileToSpecificLocation
+        
+#         os.startfile(self.originalFileDirectoryPointer.rstrip("LCCEditor\gui/") 
+#                      + '\\' 
+#                      + 'LCCEditor\LCCEditor\gui\docs'   # should be 'scripts\dist'
+#                      + '\ATtILA2 Toolbox Help.chm')         # should be the name of the help file
 
         self.logProgress(stack()[0][3] + " END")
-    
+
     def clearLccItems(self):
         """ 
             Clears the display/GUI in preparation of receiving new information to display.
@@ -898,12 +921,13 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.ClassesExpandCollapseButton.setChecked(False)
 
         self.logProgress(stack()[0][3] + " END")
-        
+    
     def changeTargetFileDirectory(self):
         """
         """
         self.originalFileDirectoryPointer = os.path.dirname(os.path.abspath(_sys.argv[0]))
         dirPath = self.originalFileDirectoryPointer.split('\\')
+#        print dirPath
         if dirPath[1] == "Projects":
             newWorkingPath = os.path.join(dirPath[0], '\\', dirPath[1], 'ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications/')
         elif "ToolboxSource" in dirPath:
@@ -920,6 +944,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             print "no correct file path found"
         
         os.chdir(newWorkingPath)
+#        print newWorkingPath
         if not os.path.isdir('AutoSave'):
             os.mkdir('AutoSave')
                     
@@ -2550,7 +2575,8 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
         try:
-            return float(passedString)
+            float(passedString)
+            return True
         except ValueError:
             return False
           
