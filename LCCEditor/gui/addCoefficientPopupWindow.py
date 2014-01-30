@@ -40,7 +40,7 @@ class AddCoefficientPopupWindow(QtGui.QDialog):
         self.coefficientTableWidgetDialog.setObjectName("coefficientTableWidgetDialog")
         
         columncount = 4
-        headerLabels = ["Id", "Name", "Field Name","A/P Method" ]
+        headerLabels = ["Id", "Description", "Field Name","A/P Method" ]
                    
         self.coefficientTableWidgetDialog.setSortingEnabled(True)
         self.coefficientTableWidgetDialog.sortByColumn(0,QtCore.Qt.AscendingOrder)

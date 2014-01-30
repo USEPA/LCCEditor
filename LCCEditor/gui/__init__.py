@@ -942,6 +942,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         else:
             #This cannot find the path that we need
             print "no correct file path found"
+            newWorkingPath = os.path.join(dirPath[0], '\\','ATtILA2\src\ATtILA2\ToolboxSource\LandCoverClassifications/')
         
         os.chdir(newWorkingPath)
 #        print newWorkingPath
@@ -1087,7 +1088,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 loopInteger = loopInteger + 1
                 
             # Auto adjust Value table based on contents
-            self.ValueTableWidget.resizeColumnsToContents()
+#            self.ValueTableWidget.resizeColumnsToContents()
     
             self.ValueTableWidget.itemChanged.connect(self.valueTableCellChanged)
 
@@ -1118,7 +1119,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 self.CoefficientTableWidget.setItem(index, 0, populateCoeffId)
             
             # Auto adjust Coefficient table based on contents
-            self.CoefficientTableWidget.resizeColumnsToContents()
+#            self.CoefficientTableWidget.resizeColumnsToContents()
                 
         def displayMetaData():
             self.logProgress(stack()[0][3])
@@ -1697,7 +1698,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         index = len(self.tempLccObj.coefficients.keys()) + 3
         col = 3
         while col < index:
-            self.ValueTableWidget.setColumnWidth(col, 150)
+            self.ValueTableWidget.setColumnWidth(col, 100)
             col = col + 1    
         self.ValueTableWidget.setHorizontalHeaderLabels(headerLabels)
         self.ValueTableWidget.verticalHeader().setVisible(False)
@@ -1857,7 +1858,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
  
         # creation of parameters...therefore must be implemented outside build file ....   :(
         columncount = 4
-        headerLabels = ["Id", "Name", "Fieldname", "A/P"]
+        headerLabels = ["Id", "Description", "Fieldname", "A/P"]
                
         self.CoefficientTableWidget.setSortingEnabled(True)
         self.CoefficientTableWidget.sortByColumn(0, Qt.AscendingOrder)
