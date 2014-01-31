@@ -40,7 +40,7 @@ class AddCoefficientPopupWindow(QtGui.QDialog):
         self.coefficientTableWidgetDialog.setObjectName("coefficientTableWidgetDialog")
         
         columncount = 4
-        headerLabels = ["Id", "Description", "Field Name","A/P Method" ]
+        headerLabels = ["Id", "Description", "Field Name","Method" ]
                    
         self.coefficientTableWidgetDialog.setSortingEnabled(True)
         self.coefficientTableWidgetDialog.sortByColumn(0,QtCore.Qt.AscendingOrder)
@@ -213,7 +213,7 @@ class AddCoefficientPopupWindow(QtGui.QDialog):
         newLandCoverCoefficient.coefId = self.coefficientTableWidgetDialog.item(row,0).text()
         newLandCoverCoefficient.name = self.coefficientTableWidgetDialog.item(row,1).text()
         newLandCoverCoefficient.fieldName = self.coefficientTableWidgetDialog.item(row,2).text()
-        newLandCoverCoefficient.apMethod = self.coefficientTableWidgetDialog.cellWidget(row,3).currentText()
+        newLandCoverCoefficient.calcMethod = self.coefficientTableWidgetDialog.cellWidget(row,3).currentText()
 
         self.logProgress(stack()[0][3] + " END")
 

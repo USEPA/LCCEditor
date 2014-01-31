@@ -1101,21 +1101,21 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 populateCoeffId = PySide.QtGui.QTableWidgetItem()
                 populateCoeffName = PySide.QtGui.QTableWidgetItem()
                 populateCoeffFieldName = PySide.QtGui.QTableWidgetItem()
-                populateCoeffAPMethod = PySide.QtGui.QTableWidgetItem()
+                populateCoeffCalcMethod = PySide.QtGui.QTableWidgetItem()
                 populateCoeffId.setText(coefficientObj.coefId)
                 populateCoeffName.setText(coefficientObj.name)
                 populateCoeffFieldName.setText(coefficientObj.fieldName)
-                populateCoeffAPMethod.setText(coefficientObj.apMethod)
+                populateCoeffCalcMethod.setText(coefficientObj.calcMethod)
                 
                 # Locks column contents from being modified
                 populateCoeffId.setFlags(Qt.NoItemFlags)
                 populateCoeffName.setFlags(Qt.NoItemFlags)
                 populateCoeffFieldName.setFlags(Qt.NoItemFlags)
-                populateCoeffAPMethod.setFlags(Qt.NoItemFlags)
+                populateCoeffCalcMethod.setFlags(Qt.NoItemFlags)
                 
                 self.CoefficientTableWidget.setItem(index, 1, populateCoeffName)
                 self.CoefficientTableWidget.setItem(index, 2, populateCoeffFieldName)
-                self.CoefficientTableWidget.setItem(index, 3, populateCoeffAPMethod)
+                self.CoefficientTableWidget.setItem(index, 3, populateCoeffCalcMethod)
                 self.CoefficientTableWidget.setItem(index, 0, populateCoeffId)
             
             # Auto adjust Coefficient table based on contents
@@ -1398,14 +1398,6 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         meta.append(metaDesc)
 
         # add the coefficients text and coefficients
-#         coeffText = etree.Comment("""    
-#         * The Coefficients node contains coefficients to be assigned to values.
-#         * 
-#         * Id - text, unique identifier
-#         * Name - text, name describing coefficient
-#         * fieldName - text, name of field to be created for output
-#         * apMethod - text, Percentage or Area Percentage
-#     """)
         coeffText = etree.Comment(""" 
         * The coefficients node contains coefficients to be assigned to values.
            
@@ -1413,7 +1405,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         * Id - text, unique identifier
         * Name - text, word or phrase describing coefficient
         * fieldName - text, name of field to be created for output
-        * apMethod - text, "P" or "A", designates "P"ercentage or per unit "A"rea calculation routine
+        * method - text, "P" or "A", designates "P"ercentage or per unit "A"rea calculation routine
     """)
         root.append(coeffText)
         coeffs = Element(constants.XmlElementCoefficients)
@@ -1422,8 +1414,8 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             tempid = self.tempLccObj.coefficients[str(coef)].coefId
             tempname = self.tempLccObj.coefficients[str(coef)].name
             tempfieldname = self.tempLccObj.coefficients[str(coef)].fieldName
-            tempAPMethod = self.tempLccObj.coefficients[str(coef)].apMethod
-            coeff = Element(constants.XmlElementCoefficient, Id=tempid, Name=tempname, fieldName=tempfieldname, apMethod=tempAPMethod)
+            tempCalcMethod = self.tempLccObj.coefficients[str(coef)].calcMethod
+            coeff = Element(constants.XmlElementCoefficient, Id=tempid, Name=tempname, fieldName=tempfieldname, method=tempCalcMethod)
             coeffs.append(coeff)
         root.append(coeffs)
 
@@ -1863,7 +1855,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
  
         # creation of parameters...therefore must be implemented outside build file ....   :(
         columncount = 4
-        headerLabels = ["Id", "Description", "Fieldname", "A/P"]
+        headerLabels = ["Id", "Description", "Fieldname", "Method"]
                
         self.CoefficientTableWidget.setSortingEnabled(True)
         self.CoefficientTableWidget.sortByColumn(0, Qt.AscendingOrder)
@@ -1872,7 +1864,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.CoefficientTableWidget.setColumnWidth(0, 150)
         self.CoefficientTableWidget.setColumnWidth(1, 225)
         self.CoefficientTableWidget.setColumnWidth(2, 125)
-        self.CoefficientTableWidget.setColumnWidth(3, 25)
+        self.CoefficientTableWidget.setColumnWidth(3, 75)
         self.CoefficientTableWidget.setHorizontalHeaderLabels(headerLabels)
         lastHeader = self.CoefficientTableWidget.horizontalHeader()
         lastHeader.setStretchLastSection(True)
