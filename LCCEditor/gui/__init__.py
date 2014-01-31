@@ -1381,6 +1381,11 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         # create the root element
         root = Element('lccSchema')
         tree = ElementTree(root)
+
+        # add attributes to root for XSD validation of XML document        
+        rootAttribDict = root.attrib
+        for aAttribute in constants.XmlValidation:
+            rootAttribDict.update(aAttribute)
         
         # create metadata nodes
         meta = Element(constants.XmlElementMetadata)
