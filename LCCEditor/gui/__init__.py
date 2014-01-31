@@ -1493,11 +1493,11 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         * OPTIONAL ATTRIBUTES
         * Name - text, word or phrase describing class
         * filter - text, a string of one or more tool name abbreviations separated by a ";"
-        *        - possible abbreviations are: lcp, rlcp, lcosp, splcp, and caeam
+        *        - possible abbreviations are: lcp, rlcp, lcosp, splcp, and caem
         *        - used to exclude the class from the selectable classes in the tool's GUI
         * xxxxField - text, overrides ATtILA-generated field name for output
         *           - where xxxx equals a tool name abbreviation
-        *           - possible abbreviations are: lcp, rlcp, lcosp, splcp, and caeam
+        *           - possible abbreviations are: lcp, rlcp, lcosp, splcp, and caem
         *           - a separate xxxxField attribute can exist for each tool
 
         * A class can contain either values or classes but not both types.
