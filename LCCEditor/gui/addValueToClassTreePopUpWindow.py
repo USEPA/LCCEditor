@@ -8,7 +8,7 @@
 import PySide
 from PySide import QtCore, QtGui
 #from PySide.QtGui import *
-import pylet
+from pylet import lcc
 from inspect import stack
 
 class AddValueToClassTreePopUpWindow(QtGui.QDialog):

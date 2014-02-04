@@ -38,7 +38,7 @@ from xml.etree.ElementTree import Comment, Element, ElementTree
 import os, stat
 from stat import *
 import platform  # needed for platform details
-import pylet
+from pylet import lcc
 from pylet.lcc import constants
 import sys as _sys
 import xml.etree.ElementTree as etree
@@ -106,7 +106,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.ValueTableWidget.itemPressed.connect(self.valueTableCellClicked)
         self.ValueTableWidget.itemChanged.connect(self.valueTableCellChanged)
         self.ClassesTree.itemPressed.connect(self.classesTreeCellClicked)
-        self.tempLccObj = pylet.lcc.EditorLandCoverClassification()
+        self.tempLccObj = lcc.EditorLandCoverClassification()
         self.ClassesTree.itemChanged.connect(self.dropItemToClassTree)
         self.valueItemWanted.connect(self.onValueTableDrag)
         self.classItemWanted.connect(self.onClassTreeDrag)
@@ -188,7 +188,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.clearLccItems()
 
         # Load the input file
-        self.tempLccObj = pylet.lcc.EditorLandCoverClassification(autoSaveFileName)  # create a LandCoverClassification object
+        self.tempLccObj = lcc.EditorLandCoverClassification(autoSaveFileName)  # create a LandCoverClassification object
         self.setWindowTitle("Land Cover Classification Editor - " + os.path.basename(autoSaveFileName))
         self.displayFile()
         self.saveTime.start(constants.TimeInterval)
@@ -258,7 +258,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.clearLccItems()
         self.fileName = targetFile
         # Load the input file
-        self.tempLccObj = pylet.lcc.EditorLandCoverClassification(self.fileName)  # create a LandCoverClassification object
+        self.tempLccObj = lcc.EditorLandCoverClassification(self.fileName)  # create a LandCoverClassification object
         self.setWindowTitle("Land Cover Classification Editor - " + os.path.basename(self.fileName))
         self.updateRecentOpenFileList(self.fileName)
         self.displayFile()
@@ -436,7 +436,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 
         # Reconnect signal
         self.ValueTableWidget.itemChanged.connect(self.valueTableCellChanged)
-        newLandCoverValue = pylet.lcc.LandCoverValue()
+        newLandCoverValue = lcc.LandCoverValue()
         self.extractValueTableInfo(event.row(), newLandCoverValue)
         self.updateValueTableInClassObject(newLandCoverValue)
         self.displayFile()
@@ -832,7 +832,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 #                     + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
 
         helpFileAddress = self.originalFileDirectoryPointer.rstrip("scripts\dist/") \
-                    + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
+                    + '\\' + 'doc' + '\ATtILA for ArcGIS Toolbox Help.chm'
         # David's computer
 #         helpFileAddress = self.originalFileDirectoryPointer \
 #                     + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
@@ -903,14 +903,14 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         
         self.saveTime.stop()
         self.clearLccItems()
-        self.tempLccObj = pylet.lcc.EditorLandCoverClassification()
-        tempCoefficient = pylet.lcc.LandCoverCoefficient()
+        self.tempLccObj = lcc.EditorLandCoverClassification()
+        tempCoefficient = lcc.LandCoverCoefficient()
         tempCoefficient.populateCoefficient("IMPERVIOUS", "Percent Cover Total Impervious Area", "PCTIA", "P")
         self.tempLccObj.coefficients["IMPERVIOUS"] = tempCoefficient
-        tempCoefficient = pylet.lcc.LandCoverCoefficient()
+        tempCoefficient = lcc.LandCoverCoefficient()
         tempCoefficient.populateCoefficient("NITROGEN", "Estimated Nitrogen Loading Based on Land Cover", "N_Load", "A")
         self.tempLccObj.coefficients["NITROGEN"] = tempCoefficient
-        tempCoefficient = pylet.lcc.LandCoverCoefficient()
+        tempCoefficient = lcc.LandCoverCoefficient()
         tempCoefficient.populateCoefficient("PHOSPHORUS", "Estimated Phosphorus Loading Based on Land Cover", "P_Load", "A")
         self.tempLccObj.coefficients["PHOSPHORUS"] = tempCoefficient
         self.deactivateClassButtons()
@@ -981,7 +981,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.clearLccItems()
 
         # Load the input file
-        self.tempLccObj = pylet.lcc.EditorLandCoverClassification(self.fileName)  # create a LandCoverClassification object
+        self.tempLccObj = lcc.EditorLandCoverClassification(self.fileName)  # create a LandCoverClassification object
         self.setWindowTitle("Land Cover Classification Editor - " + os.path.basename(self.fileName))
         self.updateRecentOpenFileList(self.fileName)
         self.displayFile()
@@ -1011,7 +1011,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 #        self.logProgress(stack()[0][3])
                
         for value in self.tempLccObj.values.values():  # creates value for iterator
-            assert isinstance(value, pylet.lcc.LandCoverValue)  # activates auto-completion   
+            assert isinstance(value, lcc.LandCoverValue)  # activates auto-completion   
             try:
                          
                 if value.valueId == idValue:
@@ -1062,7 +1062,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
                 self.ValueTableWidget.setItem(index, 0, populateId)
             
             loopInteger = 0
-            tempLCV = pylet.lcc.LandCoverValue()
+            tempLCV = lcc.LandCoverValue()
             
             while loopInteger < len(self.tempLccObj.values.keys()):
                 tempLCV = self.tempLccObj.values[int(self.ValueTableWidget.item(loopInteger, 0).text())]
@@ -1162,7 +1162,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
  
                 try:
                     for childClass in landCoverClass.childClasses:
-                        assert isinstance(childClass, pylet.lcc.EditorLandCoverClass)
+                        assert isinstance(childClass, lcc.EditorLandCoverClass)
                         
                         # childClass
                         item_1 = PySide.QtGui.QTreeWidgetItem(item_0)
@@ -1195,7 +1195,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             if not self.tempLccObj.classes.topLevelClasses == None:
                 self.activateClassButtons()
                 for topLevelClass in self.tempLccObj.classes.topLevelClasses:
-                    assert isinstance(topLevelClass, pylet.lcc.EditorLandCoverClass)
+                    assert isinstance(topLevelClass, lcc.EditorLandCoverClass)
                     
                     try:
                         item_0 = PySide.QtGui.QTreeWidgetItem(self.ClassesTree)
@@ -1510,7 +1510,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 
             if landCoverClass.childClasses:
                 for childClass in landCoverClass.childClasses:
-                    assert isinstance(childClass, pylet.lcc.EditorLandCoverClass)
+                    assert isinstance(childClass, lcc.EditorLandCoverClass)
                     # childClass
                     clasDict = {}
                     clasDict[constants.XmlAttributeId] = str(childClass.classId)
@@ -1732,7 +1732,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         column = 3
         while column < len(self.tempLccObj.coefficients.keys()) + 3:
             tempholder = self.ValueTableWidget.horizontalHeaderItem(column).text()
-            newCoefficientObj = pylet.lcc.LandCoverCoefficient()
+            newCoefficientObj = lcc.LandCoverCoefficient()
             newCoefficientObj.deepCopyCoefficient(self.tempLccObj.coefficients[tempholder])
             newCoefficientObj.populateCoefficientValue(self.ValueTableWidget.item(row, column).text())
             newLandCoverValue._coefficients[tempholder] = newCoefficientObj
@@ -1981,7 +1981,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         self.logProgress(stack()[0][3])
 
         # create a new LandCoverClass object
-        self.tempClassLCC = pylet.lcc.EditorLandCoverClass()  
+        self.tempClassLCC = lcc.EditorLandCoverClass()  
         while not index.data() is None:
             self.tempClassLCC = self.tempLccObj.classes[index.data()]               
             self.tempClassLCC.addNewUniqueId(idValue)              
@@ -2013,7 +2013,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
 
-        self.tempClassLCC = pylet.lcc.EditorLandCoverClass()  
+        self.tempClassLCC = lcc.EditorLandCoverClass()  
         while not index.data() is None:
             self.tempClassLCC = self.tempLccObj.classes[index.data()]               
             self.tempClassLCC.addNewUniqueId(addClassId) 
@@ -2045,7 +2045,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """
         self.logProgress(stack()[0][3])
 
-        self.tempClassLCC = pylet.lcc.EditorLandCoverClass()  
+        self.tempClassLCC = lcc.EditorLandCoverClass()  
         while not index.data() is None:
             self.tempClassLCC = self.tempLccObj.classes[index.data()]               
             self.tempClassLCC.removeUniqueId(removeClassId)              
@@ -2181,7 +2181,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         """  
         self.logProgress(stack()[0][3])
 
-        self.dialogVariable = pylet.lcc.EditorLandCoverClass()
+        self.dialogVariable = lcc.EditorLandCoverClass()
         currentItemIndex = self.ClassesTree.indexFromItem(self.ClassesTree.currentItem())
         self.dialogTitle = "Add Sibling Dialog" 
         # Checks to see if a ClassTree is empty or if any class is selected
@@ -2246,7 +2246,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 
         self.dialogTitle = "Add Child Class Dialog"
         # #Initialization area
-        self.dialogVariable = pylet.lcc.EditorLandCoverClass()
+        self.dialogVariable = lcc.EditorLandCoverClass()
         #     prompt if no file open
         if self.tempLccObj.classes.topLevelClasses == None:
             QMessageBox.warning(self, "ALERT - No File open", "Can not use 'Add Child Class' button. \n"
@@ -2329,7 +2329,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         #Initialization area
         currentItemIndex = self.ClassesTree.indexFromItem(self.ClassesTree.currentItem())
         self.dialogVariable = self.tempLccObj.classes[currentItemIndex.data()]
-        self.originalLccObject = pylet.lcc.EditorLandCoverClass()
+        self.originalLccObject = lcc.EditorLandCoverClass()
         self.originalLccObject.classId = self.tempLccObj.classes[currentItemIndex.data()].classId
         # copy into storage container for comparison
         for overwriteFieldKeys in self.dialogVariable.classoverwriteFields.keys():

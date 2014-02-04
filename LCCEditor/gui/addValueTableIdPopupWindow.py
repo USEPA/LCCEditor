@@ -7,7 +7,7 @@
 import PySide
 from PySide import QtCore, QtGui
 #from PySide.QtGui import *
-import pylet
+from pylet import lcc
 from inspect import stack
 import os
 
@@ -242,7 +242,7 @@ class AddValueTableIdPopupWindow(QtGui.QDialog):
         column = 3
         for specificKey in self.main.tempLccObj.coefficients.keys():
             tempholder = self.valueTableWidgetDialog.horizontalHeaderItem(column).text()
-            newCoefficientObj = pylet.lcc.LandCoverCoefficient()
+            newCoefficientObj = lcc.LandCoverCoefficient()
             newCoefficientObj.deepCopyCoefficient(self.main.tempLccObj.coefficients[tempholder])
             newCoefficientObj.populateCoefficientValue(self.valueTableWidgetDialog.item(row,column).text())
             newLandCoverValue._coefficients[tempholder] = newCoefficientObj
@@ -317,7 +317,7 @@ class AddValueTableIdPopupWindow(QtGui.QDialog):
         if self.message == "":
             rowIndex = 0
             while rowIndex < self.valueTableWidgetDialog.rowCount():
-                tempLCVContainerObject = pylet.lcc.LandCoverValue()
+                tempLCVContainerObject = lcc.LandCoverValue()
                 self.main.tempLCVObjectList.append(self.extractValueTableInfo(rowIndex, tempLCVContainerObject))
                 rowIndex += 1
             self.accept()

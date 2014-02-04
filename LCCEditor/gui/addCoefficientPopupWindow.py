@@ -11,7 +11,7 @@ from PySide import QtCore, QtGui
 from inspect import stack
 import os
 from PySide.QtCore import QRegExp
-import pylet
+from pylet import lcc
 
 class AddCoefficientPopupWindow(QtGui.QDialog):
     '''
@@ -208,7 +208,7 @@ class AddCoefficientPopupWindow(QtGui.QDialog):
     def extractCoefficientTableInfo(self, row):
         self.logProgress(stack()[0][3])
         
-        newLandCoverCoefficient = pylet.lcc.LandCoverCoefficient()
+        newLandCoverCoefficient = lcc.LandCoverCoefficient()
         
         newLandCoverCoefficient.coefId = self.coefficientTableWidgetDialog.item(row,0).text()
         newLandCoverCoefficient.name = self.coefficientTableWidgetDialog.item(row,1).text()

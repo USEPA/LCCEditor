@@ -7,7 +7,7 @@ Created on Aug 31, 2013
 
 from PySide import QtCore, QtGui
 from PySide.QtGui import *
-import pylet
+from pylet import lcc
 from inspect import stack
 import os
 
