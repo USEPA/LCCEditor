@@ -12,6 +12,7 @@ rename freeze_init.bak __init__.py
 ::
 cd \ATtILA2\src\LCCEditor\LCCEditor\gui
 start /WAIT cxfreeze __init__.py --target-dir dist --target-name LCCEditor.exe --base-name Win32GUI --include-modules atexit,PySide.QtNetwork --exclude-modules arcpy,pylet.arcpyutil,pylet.conversion,pylet.datetimeutil,pywintypes
+copy LCCEditor.pyw .\dist\LCCEditor.pyw
 ::
 cd \ATtILA2\src\pylet\pylet
 rename __init__.py freeze_init.bak

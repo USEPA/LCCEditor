@@ -1,0 +1,1 @@
+cxfreeze __init__.py --target-dir dist --target-name LCCEditor.exe --base-name Win32GUI --include-modules atexit,PySide.QtNetwork --exclude-modules arcpy,pylet.arcpyutil,pylet.conversion,pylet.datetimeutil,pywintypes
