@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/img/images">
+        <file>chart_organisation.png</file>
+        <file>chart_organisation_add.png</file>
+        <file>delete.png</file>
+        <file>folder_user.png</file>
+        <file>group.png</file>
+        <file>group_add.png</file>
+        <file>accept.png</file>
+        <file>add.png</file>
+        <file>application_add.png</file>
+        <file>application_edit.png</file>
+        <file>application_side_expand.png</file>
+        <file>arrow_refresh.png</file>
+        <file>cancel.png</file>
+        <file>chart_organisation_delete.png</file>
+        <file>coins.png</file>
+        <file>coins_add.png</file>
+        <file>database.png</file>
+    </qresource>
+</RCC>

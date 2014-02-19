@@ -6,16 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>895</width>
-    <height>754</height>
+    <width>940</width>
+    <height>774</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Land Cover Classification Editor</string>
   </property>
   <widget class="QWidget" name="ClassesWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_4">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
      <widget class="QLabel" name="ClassesLabel">
       <property name="font">
        <font>
@@ -29,43 +35,159 @@
       </property>
      </widget>
     </item>
-    <item>
-     <layout class="QHBoxLayout" name="ClassesButtonsHorizontalLayout">
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="ClassesAddSiblingButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Start Tree/Add Sibling Class (Alt+S)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="main.qrc">
+          <normaloff>:/main/images/img/application_side_expand.png</normaloff>:/main/images/img/application_side_expand.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Alt+S</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ClassesAddChildButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Add Child Class (Alt+C)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="main.qrc">
+          <normaloff>:/main/images/img/application_add.png</normaloff>:/main/images/img/application_add.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Alt+C</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ClassesEditButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Edit Class (Alt+E)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="main.qrc">
+          <normaloff>:/main/images/img/application_edit.png</normaloff>:/main/images/img/application_edit.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Alt+E</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="ClassesInsertValuesButton">
-        <property name="text">
-         <string>Insert Values</string>
+        <property name="enabled">
+         <bool>false</bool>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="ClassesAddSiblingButton">
-        <property name="text">
-         <string>Add Sibling Class</string>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>23</horstretch>
+          <verstretch>22</verstretch>
+         </sizepolicy>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="ClassesAddChildButton">
-        <property name="text">
-         <string>Add Child Class</string>
+        <property name="toolTip">
+         <string>Insert Values (Alt+I)</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="ClassesEditButton">
         <property name="text">
-         <string>Edit</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="main.qrc">
+          <normaloff>:/main/images/img/coins_add.png</normaloff>:/main/images/img/coins_add.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Alt+I</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QToolButton" name="ClassesRemoveButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Remove Class/Value (Alt+D)</string>
+        </property>
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
         <property name="text">
          <string>Remove</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main.qrc">
+          <normaloff>:/main/images/img/delete.png</normaloff>:/main/images/img/delete.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Alt+D</string>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="ClassesExpandCollapseButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Expand/Collapse (Alt+T)</string>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Expand/Collapse</string>
+        </property>
+        <property name="icon">
+         <iconset resource="main.qrc">
+          <normaloff>:/main/images/img/chart_organisation_add.png</normaloff>
+          <normalon>:/main/images/img/chart_organisation_delete.png</normalon>:/main/images/img/chart_organisation_add.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Alt+T</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
         <property name="arrowType">
          <enum>Qt::NoArrow</enum>
@@ -74,8 +196,20 @@
       </item>
      </layout>
     </item>
-    <item>
+    <item row="2" column="0">
      <widget class="QTreeWidget" name="ClassesTree">
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <property name="dragEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::DragDrop</enum>
+      </property>
+      <property name="defaultDropAction">
+       <enum>Qt::CopyAction</enum>
+      </property>
       <property name="rootIsDecorated">
        <bool>true</bool>
       </property>
@@ -93,62 +227,14 @@
       </attribute>
       <column>
        <property name="text">
-        <string>id</string>
+        <string>Class</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>name</string>
+        <string>Description</string>
        </property>
       </column>
-      <item>
-       <property name="text">
-        <string>wetl</string>
-       </property>
-       <property name="text">
-        <string>Wetlands</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>4</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text">
-        <string>for</string>
-       </property>
-       <property name="text">
-        <string>Forest</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-      </item>
      </widget>
     </item>
    </layout>
@@ -158,16 +244,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>895</width>
-     <height>25</height>
+     <width>940</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="MenuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menOpen_Recent">
+     <property name="title">
+      <string>Open Recent</string>
+     </property>
+     <addaction name="actionNone"/>
+    </widget>
     <addaction name="ActionNew"/>
     <addaction name="ActionOpen"/>
+    <addaction name="menOpen_Recent"/>
+    <addaction name="ActionRestore_AutoSave"/>
     <addaction name="separator"/>
     <addaction name="ActionSave"/>
     <addaction name="ActionSaveAs"/>
@@ -183,17 +277,57 @@
     <addaction name="ActionAbout"/>
    </widget>
    <widget class="QMenu" name="MenuImport">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>&amp;Import</string>
     </property>
     <addaction name="ActionImportFromRaster"/>
-    <addaction name="ActionImportFromLcc"/>
+   </widget>
+   <widget class="QMenu" name="MenuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="ActionValues_Dock"/>
+    <addaction name="ActionCoefficient_Dock"/>
+    <addaction name="ActionMetadata_Dock"/>
    </widget>
    <addaction name="MenuFile"/>
+   <addaction name="MenuView"/>
    <addaction name="MenuImport"/>
    <addaction name="MenuHelp"/>
   </widget>
+  <widget class="QToolBar" name="ToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolTip">
+    <string>Show/Hide Values</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="ActionValuesShowHide"/>
+   <addaction name="ActionMetadataShowHide"/>
+   <addaction name="ActionCoefficientShowHide"/>
+  </widget>
   <widget class="QDockWidget" name="ValuesDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>509</width>
+     <height>368</height>
+    </size>
+   </property>
    <property name="font">
     <font>
      <family>Arial</family>
@@ -208,169 +342,240 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="ValuesDockContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <layout class="QHBoxLayout" name="ValuesButtonsHorizontalLayout">
        <item>
-        <widget class="QToolButton" name="ValuesIncludeButton">
+        <widget class="QPushButton" name="ValuesAddButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
+           <family>MS Shell Dlg 2</family>
            <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Add Value (Ctrl+A)</string>
+         </property>
          <property name="text">
-          <string>Include</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="main.qrc">
+           <normaloff>:/main/images/img/add.png</normaloff>:/main/images/img/add.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+A</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="ValuesExcludeButton">
+        <widget class="QPushButton" name="ValuesRemoveButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>MS Shell Dlg 2</family>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
          </property>
-         <property name="autoFillBackground">
+         <property name="toolTip">
+          <string>Remove Value (Ctrl+D)</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="main.qrc">
+           <normaloff>:/main/images/img/cancel.png</normaloff>:/main/images/img/cancel.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+D</string>
+         </property>
+         <property name="checkable">
           <bool>false</bool>
          </property>
-         <property name="text">
-          <string>Exclude</string>
-         </property>
-         <property name="arrowType">
-          <enum>Qt::NoArrow</enum>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="ValuesAddButton">
+        <widget class="QPushButton" name="ValuesIncludeAllButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
+           <family>MS Shell Dlg 2</family>
            <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="ValuesRemoveButton">
-         <property name="font">
-          <font>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
+         <property name="toolTip">
+          <string>Deselect Exclusion (Ctrl+I)</string>
          </property>
          <property name="text">
-          <string>Remove</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="main.qrc">
+           <normaloff>:/main/images/img/excluded.PNG</normaloff>:/main/images/img/excluded.PNG</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+I</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item>
-      <widget class="QTreeWidget" name="ValuesTree">
-       <property name="font">
-        <font>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::MultiSelection</enum>
-       </property>
-       <property name="sortingEnabled">
+     <item row="1" column="0">
+      <widget class="QTableWidget" name="ValueTableWidget">
+       <property name="enabled">
         <bool>true</bool>
        </property>
-       <attribute name="headerDefaultSectionSize">
-        <number>121</number>
-       </attribute>
-       <attribute name="headerMinimumSectionSize">
-        <number>4</number>
-       </attribute>
-       <attribute name="headerStretchLastSection">
+       <property name="dragEnabled">
         <bool>true</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>id</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>name</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>excluded</string>
-        </property>
-       </column>
-       <item>
-        <property name="text">
-         <string>4</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-        <property name="text">
-         <string>test</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checkState">
-         <enum>PartiallyChecked</enum>
-        </property>
-       </item>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragOnly</enum>
+       </property>
+       <property name="showGrid">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="CoefficientDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>89</width>
+     <height>143</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::AllDockWidgetAreas</set>
+   </property>
+   <property name="windowTitle">
+    <string>COEFFICIENTS</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="ValuesButtonsHorizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="CoefficientAddButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Add Coefficients</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="main.qrc">
+           <normaloff>:/main/images/img/add.png</normaloff>:/main/images/img/add.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="CoefficientRemoveButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Remove Coefficients</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="main.qrc">
+           <normaloff>:/main/images/img/cancel.png</normaloff>:/main/images/img/cancel.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTableWidget" name="CoefficientTableWidget"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <widget class="QDockWidget" name="MetadataDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>89</width>
+     <height>177</height>
+    </size>
+   </property>
    <property name="font">
     <font>
      <family>Arial</family>
@@ -385,8 +590,8 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="MetadataDockContents">
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
       <widget class="QLabel" name="MetadataNameLabel">
        <property name="font">
         <font>
@@ -399,7 +604,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="0">
       <widget class="QLineEdit" name="MetadataNameLineEdit">
        <property name="font">
         <font>
@@ -409,7 +614,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="2" column="0">
       <widget class="QLabel" name="MetadataDescriptionLabel">
        <property name="font">
         <font>
@@ -423,7 +628,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="3" column="0">
       <widget class="QPlainTextEdit" name="MetadataDescriptionTextEdit">
        <property name="font">
         <font>
@@ -436,42 +641,44 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="ToolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="ActionValuesShowHide"/>
-   <addaction name="ActionMetadataShowHide"/>
-  </widget>
   <action name="ActionNew">
    <property name="text">
     <string>&amp;New...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="ActionOpen">
    <property name="text">
     <string>&amp;Open...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="ActionSave">
    <property name="text">
     <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="ActionQuit">
    <property name="text">
     <string>&amp;Quit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="ActionSaveAs">
    <property name="text">
     <string>Save &amp;As...</string>
+   </property>
+   <property name="shortcut">
+    <string>F12</string>
    </property>
   </action>
   <action name="ActionImportFromRaster">
@@ -488,6 +695,9 @@
    <property name="text">
     <string>LCCEditor &amp;Help</string>
    </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
   </action>
   <action name="ActionAbout">
    <property name="text">
@@ -501,6 +711,10 @@
    <property name="checked">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="main.qrc">
+     <normaloff>:/main/images/img/coins.png</normaloff>:/main/images/img/coins.png</iconset>
+   </property>
    <property name="text">
     <string>Show/Hide Values</string>
    </property>
@@ -512,12 +726,104 @@
    <property name="checked">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="main.qrc">
+     <normaloff>:/main/images/img/database.png</normaloff>:/main/images/img/database.png</iconset>
+   </property>
    <property name="text">
     <string>Show/Hide Metadata</string>
    </property>
   </action>
+  <action name="ActionCoefficientShowHide">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="main.qrc">
+     <normaloff>:/main/images/img/coins_add.png</normaloff>:/main/images/img/coins_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>ActionCoefficientShowHide</string>
+   </property>
+   <property name="toolTip">
+    <string>Show/Hide Coefficients</string>
+   </property>
+  </action>
+  <action name="ActionRestore_AutoSave">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Restore AutoSave</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="ActionValues_Dock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show/Hide Values Dock</string>
+   </property>
+   <property name="toolTip">
+    <string>Show/Hide Values Dock</string>
+   </property>
+  </action>
+  <action name="ActionCoefficient_Dock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show/Hide Coefficient Dock</string>
+   </property>
+   <property name="toolTip">
+    <string>Show/Hide Coefficient Dock</string>
+   </property>
+  </action>
+  <action name="ActionMetadata_Dock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show/Hide Metadata Dock</string>
+   </property>
+   <property name="toolTip">
+    <string>Show/Hide Metadata Dock</string>
+   </property>
+  </action>
+  <action name="actionNone">
+   <property name="text">
+    <string>None</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>MetadataNameLineEdit</tabstop>
+  <tabstop>MetadataDescriptionTextEdit</tabstop>
+  <tabstop>ClassesAddChildButton</tabstop>
+  <tabstop>ClassesEditButton</tabstop>
+  <tabstop>ClassesRemoveButton</tabstop>
+  <tabstop>ClassesTree</tabstop>
+  <tabstop>ClassesAddSiblingButton</tabstop>
+  <tabstop>ValuesAddButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="main.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>ActionValuesShowHide</sender>
@@ -546,8 +852,168 @@
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>777</x>
-     <y>299</y>
+     <x>273</x>
+     <y>691</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionCoefficientShowHide</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CoefficientDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>509</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ValuesDock</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>ActionValuesShowHide</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CoefficientDock</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>ActionCoefficientShowHide</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MetadataDock</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>ActionMetadataShowHide</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>685</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionValues_Dock</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>ValuesDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionValuesShowHide</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>ActionValues_Dock</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionCoefficient_Dock</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CoefficientDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>509</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionCoefficientShowHide</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>ActionCoefficient_Dock</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionMetadata_Dock</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MetadataDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>685</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ActionMetadataShowHide</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>ActionMetadata_Dock</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
