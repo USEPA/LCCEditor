@@ -831,7 +831,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 #         helpFileAddress = self.originalFileDirectoryPointer[:-12] \
 #                     + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
 
-        helpFileAddress = self.originalFileDirectoryPointer.rstrip("scripts\dist/") \
+        helpFileAddress = self.originalFileDirectoryPointer.rstrip("scripts\bin/") \
                     + '\\' + 'doc' + '\ATtILA for ArcGIS Toolbox Help.chm'
         # David's computer
 #         helpFileAddress = self.originalFileDirectoryPointer \
@@ -844,7 +844,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         
 #         os.startfile(self.originalFileDirectoryPointer.rstrip("LCCEditor\gui/") 
 #                      + '\\' 
-#                      + 'LCCEditor\LCCEditor\gui\docs'   # should be 'scripts\dist'
+#                      + 'LCCEditor\LCCEditor\gui\docs'   # should be 'scripts\bin'
 #                      + '\ATtILA2 Toolbox Help.chm')         # should be the name of the help file
 
         self.logProgress(stack()[0][3] + " END")
