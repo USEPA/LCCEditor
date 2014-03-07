@@ -831,7 +831,9 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
 #         helpFileAddress = self.originalFileDirectoryPointer[:-12] \
 #                     + '\\' + 'doc' + '\ATtILA2 Toolbox Help.chm'
 
-        helpFileAddress = self.originalFileDirectoryPointer.rstrip("scripts\bin/") \
+#         helpFileAddress = self.originalFileDirectoryPointer.rstrip("scripts\bin/") \
+        rIndex = self.originalFileDirectoryPointer.rfind(r"scripts\bin")
+        helpFileAddress = self.originalFileDirectoryPointer[:rIndex] \
                     + '\\' + 'doc' + '\ATtILA for ArcGIS Toolbox Help.chm'
         # David's computer
 #         helpFileAddress = self.originalFileDirectoryPointer \
