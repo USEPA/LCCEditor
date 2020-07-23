@@ -775,6 +775,9 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
             event.accept()
 
         self.logProgress(stack()[0][3] + " END")
+		
+        logFile = os.path.join('AutoSave','log.lfn')
+        os.remove(logFile)
                       
     def about(self):
         """
@@ -1407,6 +1410,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         * Id - text, unique identifier
         * Name - text, word or phrase describing coefficient
         * fieldName - text, name of field to be created for output
+        *           - must conform to the field naming conventions dictated by the output database system
         * method - text, "P" or "A", designates "P"ercentage or per unit "A"rea calculation routine
     """)
         root.append(coeffText)
@@ -1488,6 +1492,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
     
         * REQUIRED ATTRIBUTES
         * Id - text, unique identifier, also used for automated generation of output field name
+        *    - must conform to the field naming conventions dictated by the output database system
         
         * OPTIONAL ATTRIBUTES
         * Name - text, word or phrase describing class
@@ -1498,6 +1503,7 @@ class MainWindow(_QMainWindow, Ui_MainWindow, QDialog):
         *           - where xxxx equals a tool name abbreviation
         *           - possible abbreviations are: lcp, rlcp, lcosp, and splcp
         *           - a separate xxxxField attribute can exist for each tool
+        *           - must conform to the field naming conventions dictated by the output database system
 
         * A class can contain either values or classes but not both types.
         * Value elements contain only an Id attribute which refers to a value in a raster.

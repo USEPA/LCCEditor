@@ -289,6 +289,8 @@ class AddCoefficientPopupWindow(QtGui.QDialog):
         self.logProgress(stack()[0][3] + " END")
    
     def logProgress(self, message):
-        logFile = open("log.lfn",'a')
+        logString = "log.lfn"
+        logFile = os.path.join('AutoSave',logString)
+        logFile = open(logFile,'a')
         logFile.write(message + "\n")
         logFile.close()
